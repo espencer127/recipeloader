@@ -1,0 +1,407 @@
+[
+  {
+    "id": -131,
+    "name": "2024-02-08#4",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 09:31:01",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-shadow",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -130,
+    "name": "2024-06",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 09:31:01",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-week",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -129,
+    "name": "2024-02-08",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 09:31:01",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-day",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -128,
+    "name": "2024-02-06#13",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 09:28:05",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-shadow",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -126,
+    "name": "2024-02-06",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 09:28:05",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-day",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -116,
+    "name": "2024-02-06#2",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 05:16:57",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-shadow",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -109,
+    "name": "2024-02-05",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 01:57:33",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-day",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -95,
+    "name": "2024-02-10",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-day",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -87,
+    "name": "2024-02-07",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-day",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -76,
+    "name": "2024-05",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-week",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -75,
+    "name": "2024-02-04",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-day",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -62,
+    "name": "2024-02-11#7",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-shadow",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -60,
+    "name": "2024-02-11",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-day",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -53,
+    "name": "2024-02-10#6",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-shadow",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -44,
+    "name": "2024-02-09#5",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-shadow",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -42,
+    "name": "2024-02-09",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-day",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -26,
+    "name": "2024-02-07#3",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-shadow",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": -8,
+    "name": "2024-02-05#1",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "mealplan-shadow",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": 1,
+    "name": "Pizza",
+    "description": "<h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur <span style=\"background-color:rgb(255,255,0);\">sadipscing elitr</span>, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><ul><li>At vero eos et accusam et justo duo dolores et ea rebum.</li><li>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li></ul><h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur \nsadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et \ndolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et\n justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea \ntakimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit \namet, consetetur <span style=\"background-color:rgb(255,255,0);\">sadipscing elitr</span>,\n sed diam nonumy eirmod tempor invidunt ut labore et dolore magna \naliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo \ndolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus \nest Lorem ipsum dolor sit amet.</p>",
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": "pizza.jpg",
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": "17"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Spaghetti bolognese",
+    "description": "<h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur <span style=\"background-color: rgb(255, 255, 0);\">sadipscing elitr</span>, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><ul><li>At vero eos et accusam et justo duo dolores et ea rebum.</li><li>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li></ul><h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur \r\nsadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et \r\ndolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et\r\n justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea \r\ntakimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit \r\namet, consetetur <span style=\"background-color: rgb(255, 255, 0);\">sadipscing elitr</span>,\r\n sed diam nonumy eirmod tempor invidunt ut labore et dolore magna \r\naliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo \r\ndolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus \r\nest Lorem ipsum dolor sit amet.</p>",
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": "spaghetti.jpg",
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": 3,
+    "name": "Sandwiches",
+    "description": "<h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur <span style=\"background-color:rgb(255,255,0);\">sadipscing elitr</span>, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><ul><li>At vero eos et accusam et justo duo dolores et ea rebum.</li><li>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li></ul><h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur \nsadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et \ndolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et\n justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea \ntakimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit \namet, consetetur <span style=\"background-color:rgb(255,255,0);\">sadipscing elitr</span>,\n sed diam nonumy eirmod tempor invidunt ut labore et dolore magna \naliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo \ndolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus \nest Lorem ipsum dolor sit amet.</p>",
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": "sandwiches.jpg",
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": 4,
+    "name": "Pancakes",
+    "description": "<h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur <span style=\"background-color: rgb(255, 255, 0);\">sadipscing elitr</span>, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><ul><li>At vero eos et accusam et justo duo dolores et ea rebum.</li><li>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li></ul><h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur \r\nsadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et \r\ndolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et\r\n justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea \r\ntakimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit \r\namet, consetetur <span style=\"background-color: rgb(255, 255, 0);\">sadipscing elitr</span>,\r\n sed diam nonumy eirmod tempor invidunt ut labore et dolore magna \r\naliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo \r\ndolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus \r\nest Lorem ipsum dolor sit amet.</p>",
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": "pancakes.jpg",
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": 5,
+    "name": "Chocolate sauce",
+    "description": "<h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur <span style=\"background-color:rgb(255,255,0);\">sadipscing elitr</span>, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><ul><li>At vero eos et accusam et justo duo dolores et ea rebum.</li><li>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li></ul><h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur \nsadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et \ndolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et\n justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea \ntakimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit \namet, consetetur <span style=\"background-color:rgb(255,255,0);\">sadipscing elitr</span>,\n sed diam nonumy eirmod tempor invidunt ut labore et dolore magna \naliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo \ndolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus \nest Lorem ipsum dolor sit amet.</p>",
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": "chocolate_sauce.jpg",
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": "3"
+    }
+  },
+  {
+    "id": 6,
+    "name": "Pancakes / Chocolate sauce",
+    "description": "<h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur <span style=\"background-color: rgb(255, 255, 0);\">sadipscing elitr</span>, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><ul><li>At vero eos et accusam et justo duo dolores et ea rebum.</li><li>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li></ul><h1>Lorem ipsum</h1><p>Lorem ipsum <b>dolor sit</b> amet, consetetur \r\nsadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et \r\ndolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et\r\n justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea \r\ntakimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit \r\namet, consetetur <span style=\"background-color: rgb(255, 255, 0);\">sadipscing elitr</span>,\r\n sed diam nonumy eirmod tempor invidunt ut labore et dolore magna \r\naliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo \r\ndolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus \r\nest Lorem ipsum dolor sit amet.</p>",
+    "row_created_timestamp": "2024-02-05 00:50:37",
+    "picture_file_name": "pancakes_chocolate_sauce.jpg",
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  },
+  {
+    "id": 7,
+    "name": "Test",
+    "description": null,
+    "row_created_timestamp": "2024-02-05 02:58:47",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 1,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": "4"
+    }
+  },
+  {
+    "id": 9,
+    "name": "Mac and Cheese",
+    "description": "<p>kjhvlkhkl;jb;lj</p>",
+    "row_created_timestamp": "2024-02-05 09:12:12",
+    "picture_file_name": null,
+    "base_servings": 10,
+    "desired_servings": 10,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": "0"
+    }
+  },
+  {
+    "id": 10,
+    "name": "Chao Min Camarão",
+    "description": "<p><b>Ingredientes para 4 pessoas:</b><br />\n</p><ul><li> 1 embalagem de massa Chinesa (noodles)</li><li> 1 embalagens de legumes Chineses (congelados)</li><li> 800g de miolo de camarão</li><li> molho de soja</li><li> oleo de sésamo (em alternativa óleo se soja ou mesmo azeite)</li><li> 1 pimento vermelho</li><li> 3 dentes de alho (opcional)</li></ul>   <b>Preparação:</b><br />\n<br />\nNum tacho coloque bastante água temperada com sal, assim que começar a ferver, adicione a massa e apague o lume.<br />\nDeixe fica a massa dentro de água por 4 minutos, retire, escorra e reserve.<br />\nNum Wok ou similar, coloque 3 colheres de sopa de óleo de sésamo, pique os dentes de alho e deixe alourar um pouco.<br />\nAdicione os legumes Chineses, as gambas e o pimento cortado em tiras.<br />\nTempere com 3 colheres de sopa de molho de soja.<br />\nEnvolva e deixe cozinhar por uns minutos até que a água deixada pelos legumes reduza um pouco.<br />\nAdicione a massa reservada e envolva tudo muito bem.<br />\nVerifique se é necessário adicionar mais umas colheres de molho de soja, e sirva de imediato.<br />\n",
+    "row_created_timestamp": "2024-02-05 14:15:35",
+    "picture_file_name": null,
+    "base_servings": 1,
+    "desired_servings": 6,
+    "not_check_shoppinglist": 0,
+    "type": "normal",
+    "product_id": null,
+    "userfields": {
+      "VitA": null
+    }
+  }
+]
