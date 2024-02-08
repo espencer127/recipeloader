@@ -27,7 +27,8 @@ public class RecipeMLService {
     }
 
     /**
-     * I had to do some weird stuff here because RecipeML spec allows multiple entries of the same property and Jackson XLMMapper doesn't like that
+     * I had to do some weird stuff here because RecipeML spec allows multiple 
+     * entries of the same property and Jackson XLMMapper doesn't like that
      * @return
      */
     public RecipeMLWrapper retrieveRecipe() {
@@ -38,7 +39,7 @@ public class RecipeMLService {
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        // Deserialize XML from the file into a Java object
+        // Deserialize XML from the file into a string, then a Java object
         try {
             String xml = FileUtils.readFileToString(file, "UTF-8");
             JSONObject jObject = XML.toJSONObject(xml);
@@ -46,7 +47,7 @@ public class RecipeMLService {
             String output = mapper.writeValueAsString(json);
             RecipeMLWrapper recipe = mapper.readValue(output, RecipeMLWrapper.class);
             
-            log.info("Got recipe {}", recipe);
+            log.debug("Got recipe {}", recipe);
 
             return recipe;
         } catch (IOException e) {

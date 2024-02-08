@@ -1,3 +1,0 @@
-grocy.docker.port: 9283
-
-recipe.file.path: src\test\resources\BrowniesRecipe.xml

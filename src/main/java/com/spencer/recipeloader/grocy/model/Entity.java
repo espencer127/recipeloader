@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.grocy.service;
+package com.spencer.recipeloader.grocy.model;
 
 public enum Entity {
     PRODUCTS("products"),
