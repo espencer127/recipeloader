@@ -1,0 +1,83 @@
+{
+    "head": {
+        "title": "15 Minute Brownies",
+        "categories": {
+            "cat": [
+                "Cookies",
+                "And",
+                "Bars"
+            ]
+        },
+        "yield": "6"
+    },
+    "ingredients": {
+        "ing": [
+            {
+                "amt": {
+                    "qty": "3/4",
+                    "unit": "cups"
+                },
+                "item": "Flour"
+            },
+            {
+                "amt": {
+                    "qty": "1/4",
+                    "unit": "teaspoons"
+                },
+                "item": "Baking soda"
+            },
+            {
+                "amt": {
+                    "qty": "1/4",
+                    "unit": "teaspoons"
+                },
+                "item": "Salt"
+            },
+            {
+                "amt": {
+                    "qty": "1/3",
+                    "unit": "cups"
+                },
+                "item": "Butter"
+            },
+            {
+                "amt": {
+                    "qty": "1/2",
+                    "unit": "cups"
+                },
+                "item": "Sugar"
+            },
+            {
+                "amt": {
+                    "qty": "2",
+                    "unit": "tablespoons"
+                },
+                "item": "Water"
+            },
+            {
+                "amt": {
+                    "qty": "12",
+                    "unit": "ounces"
+                },
+                "item": "Chocolate chips; semi-sweet"
+            },
+            {
+                "amt": {
+                    "qty": "1",
+                    "unit": "teaspoon"
+                },
+                "item": "Vanilla"
+            },
+            {
+                "amt": {
+                    "qty": "2",
+                    "unit": "Unit"
+                },
+                "item": "Eggs"
+            }
+        ]
+    },
+    "directions": {
+        "step": "1. Combine flour, soda and salt; set aside.          2. In microwave-safe mixing bowl, combine butter, sugar and water. Cook for        2 minutes at 100% power, stirring after 1 minute. Remove from oven.Add 1        cup chocolate chips and vanilla and stir until smooth and chips are melted.                3. Add eggs, one at a time, beating after each addition. Blend in flour        mixture and stir in remaining chocolate chips.                4. Pour into an 8 or 9 inch microwave-safe baking pan. Place a saucer,        upside down, in the microwave and put baking pan on top of saucer.                5. Cook at 70% power for 10 minutes turning after 5 minutes. Enjoy!                busted by sooz        Posted to recipelu-digest by sooz <kirkland@gj.net> on Mar 18, 1998"
+    }
+}

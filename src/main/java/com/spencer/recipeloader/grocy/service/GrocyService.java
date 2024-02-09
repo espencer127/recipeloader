@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
@@ -205,7 +207,7 @@ public class GrocyService {
      * @param updatedProductsList
      * @return
      */
-    private List<RecipesPos> generateRecipePosList(RecipeDto recipeDto, Recipe recipe,
+    public List<RecipesPos> generateRecipePosList(RecipeDto recipeDto, Recipe recipe,
             List<Product> updatedProductsList, List<QuantityUnit> updatedQuantityUnits) {
 
         List<RecipesPos> finalResult = new ArrayList<>();
@@ -218,27 +220,32 @@ public class GrocyService {
                     .findFirst().get();
 
             Optional<QuantityUnit> matchingQuantityUnitOpt = updatedQuantityUnits.stream()
-                    .filter(x -> StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), x.getName())).findFirst();
+                    .filter(x -> (
+                        StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), x.getName()) ||
+                        StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), madePlural(x.getName()))
+                        )
+                    ).findFirst();
 
             QuantityUnit matchingQuantityUnit = new QuantityUnit();
 
             if (matchingQuantityUnitOpt.isPresent()) {
                 matchingQuantityUnit = matchingQuantityUnitOpt.get();
             } else {
-                // check if there's a qty in "updatedQtyUnits" where the ing.amt.unit + s =
+/*                 // check if there's a qty in "updatedQtyUnits" where the ing.amt.unit + s =
                 // x.getName. If YES, then that's the 'matchingQuantityUnit'. If not, error log
                 // + continue with the next ingredient
                 Optional<QuantityUnit> matchingQuantityUnitOpt2 = updatedQuantityUnits.stream()
-                        .filter(x -> StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), madePlural(x.getName())))
+                        .filter(x -> 
+                        )
                         .findFirst();
                 if (matchingQuantityUnitOpt2.isPresent()) {
                     matchingQuantityUnit = matchingQuantityUnitOpt2.get();
-                } else {
+                } else { */
                     log.error(
                             "we in trouble...this ing doesn't have any quantity unit? Can't add it to the recipe {} for {}: {}",
                             recipe.getId(), recipe.getName(), ing);
                     continue;
-                }
+                //}
             }
 
             String neededIngQty = ing.getAmt().getQty();
@@ -249,11 +256,9 @@ public class GrocyService {
                 Integer neededInt = Integer.valueOf(neededIngQty);
                 postBody = recipeMapper.toRecipePosPostBodyWithAmount(matchingProduct.getId(), recipe.getId(),
                         neededInt, matchingQuantityUnit.getId());
-                finalResult.add(postBody);
             } catch (NumberFormatException e) {
                 postBody = recipeMapper.toRecipePosPostBodyWithVariableAmount(matchingProduct.getId(), recipe.getId(),
                         parse(neededIngQty), neededIngQty, matchingQuantityUnit.getId());
-                finalResult.add(postBody);
             }
 
             finalResult.add(postBody);
