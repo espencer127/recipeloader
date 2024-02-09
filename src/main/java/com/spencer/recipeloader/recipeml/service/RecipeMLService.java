@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.spencer.recipeloader.recipeml.model.Ing;
 import com.spencer.recipeloader.recipeml.model.RecipeMLWrapper;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -49,6 +51,8 @@ public class RecipeMLService {
             
             log.debug("Got recipe {}", recipe);
 
+            fixRecipe(recipe);
+
             return recipe;
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -57,6 +61,18 @@ public class RecipeMLService {
 
         return null;
 
+    }
+
+    /**
+     * If the recipe has any ingredients with empty units, fill it with 'unit'
+     * @param recipe
+     */
+    private void fixRecipe(RecipeMLWrapper recipe) {
+        for (Ing ing : recipe.getRecipeml().getRecipe().getIngredients().getIng()) {
+            if (StringUtils.isBlank(ing.getAmt().getUnit())) {
+                ing.getAmt().setUnit("Unit");
+            }
+        }
     }
 
 }

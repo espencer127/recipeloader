@@ -4,12 +4,16 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,6 +28,7 @@ import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.mapper.RecipeMapper;
 
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 @Component
 @Slf4j
@@ -32,24 +37,31 @@ public class GrocyClient {
     private final WebClient grocyWebClient;
     private Integer grocyDockerPort;
     private RecipeMapper recipeMapper;
+    private ObjectMapper mapper;
 
     public GrocyClient(WebClient grocyWebClient,
             @Value("${grocy.docker.port}") Integer grocyDockerPort,
-            RecipeMapper recipeMapper) {
+            RecipeMapper recipeMapper, ObjectMapper mapper) {
         this.grocyWebClient = grocyWebClient;
         this.grocyDockerPort = grocyDockerPort;
         this.recipeMapper = recipeMapper;
+        this.mapper = mapper;
     }
 
     public List<Product> getProducts() {
         ResponseEntity<String> result = getObject(Entity.PRODUCTS.label);
-        ObjectMapper mapper = new ObjectMapper();
 
         try {
             Product[] products = mapper.readValue(result.getBody(), Product[].class);
 
             List<Product> productList = Arrays.asList(products);
-            return productList;
+
+            List<Product> nonNullExistingProducts = productList
+                    .stream()
+                    .filter(x -> (!StringUtils.isEmpty(StringUtils.deleteWhitespace(x.getName()))))
+                    .collect(Collectors.toList());
+
+            return nonNullExistingProducts;
         } catch (JsonMappingException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {
@@ -61,13 +73,18 @@ public class GrocyClient {
 
     public List<Recipe> getRecipes() {
         ResponseEntity<String> result = getObject(Entity.RECIPES.label);
-        ObjectMapper mapper = new ObjectMapper();
 
         try {
             Recipe[] recipes = mapper.readValue(result.getBody(), Recipe[].class);
 
-            List<Recipe> productList = Arrays.asList(recipes);
-            return productList;
+            List<Recipe> recipeList = Arrays.asList(recipes);
+
+            List<Recipe> nonNullExistingRecipes = recipeList
+                    .stream()
+                    .filter(x -> (!StringUtils.isEmpty(StringUtils.deleteWhitespace(x.getName()))))
+                    .collect(Collectors.toList());
+
+            return nonNullExistingRecipes;
         } catch (JsonMappingException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {
@@ -79,13 +96,18 @@ public class GrocyClient {
 
     public List<QuantityUnit> getQuantityUnits() {
         ResponseEntity<String> result = getObject(Entity.QUANTITY_UNITS.label);
-        ObjectMapper mapper = new ObjectMapper();
 
         try {
             QuantityUnit[] quantityUnits = mapper.readValue(result.getBody(), QuantityUnit[].class);
 
             List<QuantityUnit> productList = Arrays.asList(quantityUnits);
-            return productList;
+
+            List<QuantityUnit> nonNullExistingQUs = productList
+                    .stream()
+                    .filter(x -> (!StringUtils.isEmpty(StringUtils.deleteWhitespace(x.getName()))))
+                    .collect(Collectors.toList());
+
+            return nonNullExistingQUs;
         } catch (JsonMappingException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {
@@ -97,7 +119,6 @@ public class GrocyClient {
 
     public List<RecipesPos> getRecipesPos() {
         ResponseEntity<String> result = getObject(Entity.RECIPES_POS.label);
-        ObjectMapper mapper = new ObjectMapper();
 
         try {
             RecipesPos[] recipesPoss = mapper.readValue(result.getBody(), RecipesPos[].class);
@@ -128,12 +149,12 @@ public class GrocyClient {
                 .retrieve()
                 .toEntity(String.class)
                 .block();
-        
+
         log.debug("got the object {}", grocyResponse);
 
         return grocyResponse;
     }
-    
+
     /**
      * Add the specified "Quantity Unit" entries to the Grocy database and return
      * the responses
@@ -144,19 +165,18 @@ public class GrocyClient {
     public List<QuantityUnit> createQuantityUnits(List<String> quantitiesWeNeedToAdd) {
         List<QuantityUnit> finalResponse = new ArrayList<>();
 
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-
-            for (String qty : quantitiesWeNeedToAdd) {
+        for (String qty : quantitiesWeNeedToAdd) {
+            try {
                 QuantityUnit postBody = recipeMapper.toQuantityUnitPostBody(qty);
-                GrocyPostResponse apiResponse = postObject(Entity.QUANTITY_UNITS.label, mapper.writeValueAsString(postBody));
+                GrocyPostResponse apiResponse = postObject(Entity.QUANTITY_UNITS.label,
+                        mapper.writeValueAsString(postBody));
 
                 postBody.setId(apiResponse.getCreated_object_id());
 
                 finalResponse.add(postBody);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         }
 
         log.debug("created the qty units {}", finalResponse);
@@ -165,32 +185,64 @@ public class GrocyClient {
     }
 
     /**
-     * Add the specified "Product" entries to the Grocy database and return the responses
+     * Add the specified "Product" entries to the Grocy database and return the
+     * responses
      * 
      * @param ingredientsWeNeedToAdd
      * @return
      */
-    public List<Product> createProducts(List<String> ingredientsWeNeedToAdd) {
+    public List<Product> createProducts(List<Product> ingredientsWeNeedToAdd) {
         List<Product> finalResponse = new ArrayList<>();
 
-        try {
-            ObjectMapper mapper = new ObjectMapper();
+        for (Product ingredient : ingredientsWeNeedToAdd) {
+            try {
+                GrocyPostResponse apiResponse = postObject(Entity.PRODUCTS.label,
+                        mapper.writeValueAsString(ingredient));
 
-            for (String ingredient : ingredientsWeNeedToAdd) {
-                Product postBody = recipeMapper.toProductPostBody(ingredient);
-                GrocyPostResponse apiResponse = postObject(Entity.PRODUCTS.label, mapper.writeValueAsString(postBody));
+                ingredient.setId(apiResponse.getCreated_object_id());
 
-                postBody.setId(apiResponse.getCreated_object_id());
-
-                finalResponse.add(postBody);
+                finalResponse.add(ingredient);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         }
 
         log.debug("created the products {}", finalResponse);
 
         return finalResponse;
+    }
+
+    public Recipe createRecipes(Recipe recipe) {
+        try {
+            GrocyPostResponse apiResponse = postObject((Entity.RECIPES.label), mapper.writeValueAsString(recipe));
+
+            recipe.setId(apiResponse.getCreated_object_id());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        log.debug("returning the recipe {}", recipe);
+
+        return recipe;
+    }
+
+    public void createRecipePos(List<RecipesPos> recipePosWeNeedToAdd) {
+        Integer errorCt = 0;
+
+        for (RecipesPos rp : recipePosWeNeedToAdd) {
+            try {
+                postObject((Entity.RECIPES_POS.label), mapper.writeValueAsString(rp));
+            } catch (Exception e) {
+                e.printStackTrace();
+                errorCt++;
+            }
+        }
+
+        log.debug("we did it fam :)");
+
+        if (errorCt > 0) {
+            log.warn("We goofed at least once :/ we goofed {} times actually", errorCt);
+        }
     }
 
     @SuppressWarnings("null")
@@ -211,11 +263,16 @@ public class GrocyClient {
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .bodyValue(body)
                 .retrieve()
+                .onStatus(httpStatus -> (!httpStatus.is2xxSuccessful()),
+                        response -> response.bodyToMono(String.class)
+                                .flatMap(error -> Mono.error(new RuntimeException(error))))
+
+                // .onStatus(httpStatus -> httpStatus.value() != 200,
+                // error -> Mono.error(new Exception("Erorr fulfilling POST request")))
                 .bodyToMono(GrocyPostResponse.class)
                 .block();
 
         return grocyResponse;
     }
-
 
 }

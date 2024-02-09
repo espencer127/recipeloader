@@ -2,13 +2,15 @@ package com.spencer.recipeloader.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 
 import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
+import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.recipeml.model.RecipeDto;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RecipeMapper {
 
     @Mapping(source = "head.title", target="name")
@@ -28,10 +30,11 @@ public interface RecipeMapper {
      * @return
      */
     @Mapping(source = "productName", target = "name")
-    @Mapping(target = "location_id", constant="1")
-    @Mapping(target = "qu_id_purchase", constant="1")
-    @Mapping(target = "qu_id_stock", constant="1")
-    Product toProductPostBody(String productName);
+    //TODO: This shouldn't be hardcoded, we should actually get the locations and throw whichever is the value for 'fridge'
+    @Mapping(target = "location_id", constant="2")
+    @Mapping(source = "qtyId", target = "qu_id_purchase")
+    @Mapping(source = "qtyId", target = "qu_id_stock")
+    Product toProductPostBody(String productName, Integer qtyId);
 
     /**
      * Only mandatory input in this POST body is name, but 
@@ -43,4 +46,7 @@ public interface RecipeMapper {
     @Mapping(source = "quantityName", target="name_plural")
     QuantityUnit toQuantityUnitPostBody(String quantityName);
 
+    RecipesPos toRecipePosPostBodyWithAmount(Integer product_id, Integer recipe_id, Integer amount, Integer qu_id);
+
+    RecipesPos toRecipePosPostBodyWithVariableAmount(Integer product_id, Integer recipe_id, Integer amount, String variable_amount, Integer qu_id);
 }

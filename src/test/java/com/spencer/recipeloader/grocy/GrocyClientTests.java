@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.grocy.service.GrocyClient;
 import com.spencer.recipeloader.mapper.RecipeMapper;
 
@@ -23,6 +24,7 @@ public class GrocyClientTests {
 
     private GrocyClient grocyClient;
     private RecipeMapper recipeMapper;
+    private ObjectMapper mapper;
 
     /*
      * @BeforeAll
@@ -50,7 +52,7 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
-            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper);
+            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertEquals(ResponseEntity.class, grocyClient.getObject(entity).getClass());
 
@@ -77,7 +79,7 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
-            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper);
+            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertNotNull(grocyClient.getProducts());
 
@@ -103,7 +105,7 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
-            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper);
+            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertNotNull(grocyClient.getRecipes());
 
@@ -129,7 +131,7 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
-            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper);
+            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertNotNull(grocyClient.getRecipes());
 
@@ -155,7 +157,7 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
-            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper);
+            this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertNotNull(grocyClient.getRecipesPos());
 
