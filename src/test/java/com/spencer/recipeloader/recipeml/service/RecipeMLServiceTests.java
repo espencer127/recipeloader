@@ -2,6 +2,8 @@ package com.spencer.recipeloader.recipeml.service;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.io.File;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,12 +19,13 @@ public class RecipeMLServiceTests {
 
     @BeforeEach
     void setup() {
-        recipeMLService = new RecipeMLService("src\\test\\resources\\LemonBars.xml");
+        recipeMLService = new RecipeMLService();
     }
 
     @Test
     public void retrieveRecipeTest_ShouldLoadFile() {
-        RecipeMLWrapper rec = recipeMLService.retrieveRecipe();
+        File file = new File("src\\test\\resources\\LemonBars.xml");
+        RecipeMLWrapper rec = recipeMLService.retrieveRecipe(file);
 
         log.info("Test class got the recipe {}", rec);
 

@@ -36,11 +36,11 @@ public class GrocyServiceTests {
     @Test
     public void whenGenerateRecipePosList_ShouldOnlyCreateOneRecipePosPerProduct() {
 
-        recipeMLService = new RecipeMLService("src\\test\\resources\\BrowniesRecipe.xml");
+        recipeMLService = new RecipeMLService();
 
         RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
 
-        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient);
+        GrocyService grocyService = new GrocyService("src\\test\\resources\\BrowniesRecipe.xml","src\\test\\resources\\BrowniesRecipe.xml",recipeMLService, recipeMapper, grocyClient);
         
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -69,11 +69,11 @@ public class GrocyServiceTests {
         String fractionQty = "1 1/2";
         Integer expected = 2;
 
-        recipeMLService = new RecipeMLService("src\\test\\resources\\BrowniesRecipe.xml");
+        recipeMLService = new RecipeMLService();
 
         RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
 
-        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient);
+        GrocyService grocyService = new GrocyService("src\\test\\resources\\BrowniesRecipe.xml","src\\test\\resources\\BrowniesRecipe.xml",recipeMLService, recipeMapper, grocyClient);
         
         Integer response = grocyService.parse(fractionQty);
 
