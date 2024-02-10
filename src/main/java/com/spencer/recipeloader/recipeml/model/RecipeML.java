@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class RecipeML {
-    private Recipe recipe;
+    private RecipeDto recipe;
     private Double version;
 }

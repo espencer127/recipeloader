@@ -9,8 +9,12 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class Recipe {
+public class RecipesPos {
     private Integer id;
-    private String name;
-    private String description;
+    private Integer recipe_id;
+    private Integer product_id;
+    private Integer amount;
+    private Integer qu_id;
+    private String ingredient_group;
+    private String variable_amount;
 }

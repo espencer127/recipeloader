@@ -17,7 +17,7 @@ public class RecipeMLServiceTests {
 
     @BeforeEach
     void setup() {
-        recipeMLService = new RecipeMLService("src\\test\\resources\\BrowniesRecipe.xml");
+        recipeMLService = new RecipeMLService("src\\test\\resources\\LemonBars.xml");
     }
 
     @Test

@@ -1,0 +1,12 @@
+{
+    "product_id": "18",
+    "qu_id": "8",
+    "amount": "0.005",
+    "variable_amount": "",
+    "ingredient_group": "",
+    "note": "",
+    "price_factor": "1",
+    "only_check_single_unit_in_stock": "0",
+    "not_check_stock_fulfillment": "0",
+    "recipe_id": 2
+}
