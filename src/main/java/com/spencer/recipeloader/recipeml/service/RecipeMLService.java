@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.json.XML;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -22,26 +21,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RecipeMLService {
 
-    String recipePath;
-
-    public RecipeMLService(@Value("${recipe.file.path}") String recipePath) {
-        this.recipePath = recipePath;
+    public RecipeMLService() {
     }
 
     /**
      * I had to do some weird stuff here because RecipeML spec allows multiple 
-     * entries of the same property and Jackson XLMMapper doesn't like that
+     * entries of the same property and Jackson XLMMapper doesn't like that. 
+     * So i had to Deserialize XML from the file into a string, then a Java object
      * @return
      */
-    public RecipeMLWrapper retrieveRecipe() {
-        File file = new File(recipePath);
+    public RecipeMLWrapper retrieveRecipe(File file) {
 
         // Create mappers
         ObjectMapper mapper = new ObjectMapper();
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        // Deserialize XML from the file into a string, then a Java object
         try {
             String xml = FileUtils.readFileToString(file, "UTF-8");
             JSONObject jObject = XML.toJSONObject(xml);
@@ -55,12 +50,10 @@ public class RecipeMLService {
 
             return recipe;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         return null;
-
     }
 
     /**

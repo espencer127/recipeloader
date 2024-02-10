@@ -1,5 +1,6 @@
 package com.spencer.recipeloader.grocy.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -8,11 +9,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
@@ -28,11 +28,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GrocyService {
 
+    String recipeFilePath;
+    String recipesFolderPath;
+
     public RecipeMLService recipeMLService;
     public RecipeMapper recipeMapper;
     public GrocyClient grocyClient;
 
-    public GrocyService(RecipeMLService recipeMLService, RecipeMapper recipeMapper, GrocyClient grocyClient) {
+    public GrocyService(@Value("${paths.recipe-file}") String recipeFilePath, @Value("${paths.recipes-folder}") String recipesFolderPath, RecipeMLService recipeMLService, RecipeMapper recipeMapper, GrocyClient grocyClient) {
+        this.recipeFilePath = recipeFilePath;
+        this.recipesFolderPath = recipesFolderPath;
         this.recipeMLService = recipeMLService;
         this.recipeMapper = recipeMapper;
         this.grocyClient = grocyClient;
@@ -53,32 +58,43 @@ public class GrocyService {
      * <li>API: POST add each ingredient to the recipe ("recipe_pos")</li>
      */
     public void execute() {
+        List<File> files = new ArrayList<>();
 
-        RecipeDto recipeDto = recipeMLService.retrieveRecipe().getRecipeml().getRecipe();
-        Recipe recipe = recipeMapper.toRecipe(recipeDto);
+        if (StringUtils.isNotBlank(recipesFolderPath)) {
+            File folder = new File(recipesFolderPath);
+            File[] listOfFiles = folder.listFiles();
+            files.addAll(Arrays.asList(listOfFiles));
+        } else {
+            File file = new File(recipeFilePath);
+            files.add(file);
+        }
 
-        log.debug("got the recipe {}", recipe);
+        for (File file : files) {
+            RecipeDto recipeDto = recipeMLService.retrieveRecipe(file).getRecipeml().getRecipe();
+            Recipe recipe = recipeMapper.toRecipe(recipeDto);
 
-        updateQuantityMasterData(recipeDto);
+            log.debug("got the recipe {}", recipe);
 
-        List<QuantityUnit> updatedUserQuantityUnits = grocyClient.getQuantityUnits();
+            updateQuantityMasterData(recipeDto);
 
-        updateProductMasterData(recipeDto, updatedUserQuantityUnits);
+            List<QuantityUnit> updatedUserQuantityUnits = grocyClient.getQuantityUnits();
 
-        List<Product> updatedUserIngredients = grocyClient.getProducts();
+            updateProductMasterData(recipeDto, updatedUserQuantityUnits);
 
-        // add recipe (all you need to include is name and description)
-        // get back object w/ id attached
-        Recipe updatedRecipe = grocyClient.createRecipes(recipe);
+            List<Product> updatedUserIngredients = grocyClient.getProducts();
 
-        // update the recipe_pos table; add records w/ addl mappings
-        // for each ingredient in the recipe, make a "recipe_pos" record
-        List<RecipesPos> recipePosWeNeedToAdd = generateRecipePosList(recipeDto, recipe, updatedUserIngredients,
-                updatedUserQuantityUnits);
+            // add recipe (all you need to include is name and description)
+            // get back object w/ id attached
+            grocyClient.createRecipes(recipe);
 
-        log.debug("we're gonna add the recipePos objects: {}", recipePosWeNeedToAdd);
+            // update the recipe_pos table; add records w/ addl mappings
+            // for each ingredient in the recipe, make a "recipe_pos" record
+            List<RecipesPos> recipePosWeNeedToAdd = generateRecipePosList(recipeDto, recipe, updatedUserIngredients, updatedUserQuantityUnits);
 
-        grocyClient.createRecipePos(recipePosWeNeedToAdd);
+            log.debug("we're gonna add the recipePos objects: {}", recipePosWeNeedToAdd);
+
+            grocyClient.createRecipePos(recipePosWeNeedToAdd);
+        }
     }
 
     /**
@@ -402,13 +418,6 @@ public class GrocyService {
     private String madePlural(String word) {
         String pluralWord = word + "s";
         return pluralWord;
-    }
-
-    private String madeSingular(String word) {
-        if (word.endsWith("s")) {
-            return word.substring(0, word.length() - 1);
-        }
-        return word;
     }
 
 }
