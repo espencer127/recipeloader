@@ -287,6 +287,10 @@ public class GrocyService {
         //if there's a space, split out the bit before it
         Integer whole = 0;
 
+        if (StringUtils.equals(ratio, "")) {
+            return 1;
+        }
+
         if (ratio.contains(" ")) {
             String[] theParts = StringUtils.split(ratio);
 
