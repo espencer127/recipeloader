@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import reactor.core.publisher.Mono;
 public class GrocyClientTests {
 
     private GrocyClient grocyClient;
-    private RecipeMapper recipeMapper;
+    public RecipeMapper recipeMapper;
     private ObjectMapper mapper;
 
     /*
@@ -52,6 +53,8 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
+            RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
+
             this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertEquals(ResponseEntity.class, grocyClient.getObject(entity).getClass());
@@ -79,6 +82,11 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
+                    
+            RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
+
+            mapper = new ObjectMapper();
+
             this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertNotNull(grocyClient.getProducts());
@@ -105,6 +113,9 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
+            RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
+            
+            mapper = new ObjectMapper();
             this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertNotNull(grocyClient.getRecipes());
@@ -131,6 +142,9 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
+                    RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
+            
+                    mapper = new ObjectMapper();
             this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertNotNull(grocyClient.getRecipes());
@@ -157,6 +171,9 @@ public class GrocyClientTests {
                     .exchangeFunction(x -> Mono.just(respWithString))
                     .build();
 
+                    RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
+            
+                    mapper = new ObjectMapper();
             this.grocyClient = new GrocyClient(webClient, 2128, recipeMapper, mapper);
 
             assertNotNull(grocyClient.getRecipesPos());
@@ -166,5 +183,8 @@ public class GrocyClientTests {
             e.printStackTrace();
         }
     }
+
+    //TODO: if we call to add a recipe_pos but get an error, need better error handling on that
+    //in this case there's an error cause of lack of conversion
 
 }

@@ -9,9 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
@@ -20,7 +18,6 @@ import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.grocy.service.GrocyClient;
 import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.mapper.RecipeMapper;
-import com.spencer.recipeloader.mapper.RecipeMapperImpl;
 import com.spencer.recipeloader.recipeml.model.RecipeDto;
 import com.spencer.recipeloader.recipeml.service.RecipeMLService;
 
@@ -65,6 +62,22 @@ public class GrocyServiceTests {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void whenParseQuantityString_shouldWork() throws Exception {
+        String fractionQty = "1 1/2";
+        Integer expected = 2;
+
+        recipeMLService = new RecipeMLService("src\\test\\resources\\BrowniesRecipe.xml");
+
+        RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
+
+        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient);
+        
+        Integer response = grocyService.parse(fractionQty);
+
+        assertEquals(expected, response);
     }
 
 }

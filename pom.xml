@@ -8,7 +8,7 @@
 		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.spencer</groupId>
+	<groupId>com.spencer.recipeloader</groupId>
 	<artifactId>recipeloader</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>recipeloader</name>
@@ -102,12 +102,13 @@
 	</dependencies>
 
 	<build>
+		<finalName>RecipeLoaderApplication</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.spencer.RecipeLoaderApplication</mainClass>
+					<mainClass>com.spencer.recipeloader.RecipeLoaderApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

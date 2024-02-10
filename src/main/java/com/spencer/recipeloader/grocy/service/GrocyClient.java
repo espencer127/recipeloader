@@ -9,11 +9,9 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,7 +26,6 @@ import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.mapper.RecipeMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 
 @Component
 @Slf4j
@@ -250,6 +247,7 @@ public class GrocyClient {
 
         String api = "api";
         String objects = "objects";
+        GrocyPostResponse grocyResponse = new GrocyPostResponse();
 
         URI buildUri = UriComponentsBuilder.fromUriString("http://localhost")
                 .port(grocyDockerPort)
@@ -258,19 +256,36 @@ public class GrocyClient {
 
         log.debug("Sending request to {} with the body {}", buildUri, body);
 
-        GrocyPostResponse grocyResponse = grocyWebClient.post()
-                .uri(buildUri)
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .bodyValue(body)
-                .retrieve()
-                .onStatus(httpStatus -> (!httpStatus.is2xxSuccessful()),
-                        response -> response.bodyToMono(String.class)
-                                .flatMap(error -> Mono.error(new RuntimeException(error))))
+        //grocyWebClient.mutate().filter(GrocyClientExceptionHandler.errorHandlingFilter());
 
-                // .onStatus(httpStatus -> httpStatus.value() != 200,
-                // error -> Mono.error(new Exception("Erorr fulfilling POST request")))
-                .bodyToMono(GrocyPostResponse.class)
-                .block();
+        try {
+            grocyResponse = grocyWebClient.post()
+                    .uri(buildUri)
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .bodyValue(body)
+                    .retrieve()
+                    .onStatus(
+                            httpStatus -> (!httpStatus.is2xxSuccessful()),
+                            response -> response.bodyToMono(String.class).map(Exception::new)) 
+                            //response -> new Exception(response.toString()))// response.bodyToMono(String.class).map(Exception::new))
+                    // (response -> response.bodyToMono(String.class).flatMap(error ->
+                    // Mono.error(new Exception(error))
+                    // // //response -> doSomething(response))
+
+                    // .onStatus(httpStatus -> httpStatus.value() != 200,
+                    // error -> Mono.error(new Exception("Erorr fulfilling POST request")))
+                    .bodyToMono(GrocyPostResponse.class)
+                    .block();
+        } catch (Exception e) {
+            if (StringUtils.contains(e.getMessage(),
+                    "Provided qu_id doesn't have a related conversion for that product")) {
+                log.error(e.getMessage());
+                log.error(
+                        "This means we were unable to associate this ingredient to this recipe. To fix this issue, first create a conversion between the Grocy product's quantity and the recipe ingredient's quantity. Then re-run a POST call to create the recipe_pos with the URI {} and body {}",
+                        buildUri, body);
+            }
+
+        }
 
         return grocyResponse;
     }

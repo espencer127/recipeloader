@@ -257,8 +257,13 @@ public class GrocyService {
                 postBody = recipeMapper.toRecipePosPostBodyWithAmount(matchingProduct.getId(), recipe.getId(),
                         neededInt, matchingQuantityUnit.getId());
             } catch (NumberFormatException e) {
-                postBody = recipeMapper.toRecipePosPostBodyWithVariableAmount(matchingProduct.getId(), recipe.getId(),
-                        parse(neededIngQty), neededIngQty, matchingQuantityUnit.getId());
+                try {
+                    postBody = recipeMapper.toRecipePosPostBodyWithVariableAmount(matchingProduct.getId(), recipe.getId(),
+                            parse(neededIngQty), neededIngQty, matchingQuantityUnit.getId());
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
 
             finalResult.add(postBody);
@@ -267,19 +272,48 @@ public class GrocyService {
         return finalResult;
     }
 
+    //FIXME: need to be able to handle strings like 1 1/2
     /**
      * Returns a whole number for the inputted ratio or decimal, rounded up.
      * 
      * @param ratio
      * @return
+     * @throws Exception 
      */
-    private Integer parse(String ratio) {
+    public Integer parse(String ratio) throws Exception {
+        Integer returnValue = 0;
+        Integer nominator = 0;
+        Integer denominator = 0;
+        //if there's a space, split out the bit before it
+        Integer whole = 0;
+
+        if (ratio.contains(" ")) {
+            String[] theParts = StringUtils.split(ratio);
+
+            if (theParts.length != 2) {
+                throw new Exception("can't handle the qty " + ratio);
+            }
+
+            whole = Integer.valueOf(theParts[0]);
+            ratio = theParts[1];
+        }
+
         if (ratio.contains("/")) {
             String[] rat = ratio.split("/");
-            return Math.ceilDiv(Integer.parseInt(rat[0]), Integer.parseInt(rat[1]));
+            nominator = Integer.parseInt(rat[0]);
+            denominator = Integer.parseInt(rat[1]);
+
+            if ((whole != 0) && (denominator != 0)) {
+                Integer addlValue = whole * denominator;
+                nominator = nominator + addlValue;
+            }
+
+            returnValue = Math.ceilDiv(nominator, denominator);
         } else {
-            return Integer.parseInt(Double.toString(Math.ceil(Double.parseDouble(ratio))));
+            returnValue = Integer.parseInt(Double.toString(Math.ceil(Double.parseDouble(ratio))));
         }
+
+        return returnValue;
     }
 
     private List<String> findQuantitiesWeNeedToAdd(RecipeDto recipeDto, List<QuantityUnit> existingUserQuantityUnits) {
@@ -318,7 +352,8 @@ public class GrocyService {
         return dedupedList;
     }
 
-    private List<String> findIngredientsWeNeedToAdd(RecipeDto recipeDto, List<Product> existingUserIngredients) {
+    //TODO: need to match on both qty and name
+    public List<String> findIngredientsWeNeedToAdd(RecipeDto recipeDto, List<Product> existingUserIngredients) {
         List<String> existingIngredients = existingUserIngredients
                 .stream().map(x -> x.getName().trim().toLowerCase())
                 .collect(Collectors.toList());
