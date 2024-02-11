@@ -1,0 +1,302 @@
+{
+    "@context": "http://schema.org",
+    "@type": [
+        "Recipe",
+        "NewsArticle"
+    ],
+    "headline": "World&#39;s Best Honey Garlic Pork Chops",
+    "datePublished": "2019-04-02T03:02:02.000-04:00",
+    "dateModified": "2023-08-14T15:13:01.004-04:00",
+    "author": [
+        {
+            "@type": "Person",
+            "name": "John Chandler"
+        }
+    ],
+    "description": "These glazed honey garlic pork chops are quick and simple to cook on the grill in less than 30 minutes for a mouth-watering meal.",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://www.allrecipes.com/thmb/xijdHGCdDvaDbX0cZioCuboPPX4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/235158-worlds-best-honey-garlic-pork-chops-DDMFS-4x3-6d16c2884cdd407eb8e1e2f494791542.jpg",
+        "height": 1125,
+        "width": 1500
+    },
+    "video": {
+        "@type": "VideoObject",
+        "contentUrl": "https://content.jwplatform.com/videos/vX5KzowU-ma1DlVvV.mp4",
+        "description": "Ketchup, honey, garlic, and soy sauce are a perfect combination for a sweet and savory glaze for your next grill adventure! Marinate overnight or right before you’re ready to grill – either way these pork chops will be flavorful and a favorite! Make sure to cook until no longer pink in the center and serve with a vegetable medley!",
+        "duration": "PT59S",
+        "name": "World’s Best Honey Garlic Pork Chops",
+        "thumbnailUrl": "https://cdn.jwplayer.com/v2/media/vX5KzowU/poster.jpg?width=720",
+        "uploadDate": "2023-03-14T12:12:32.301-04:00"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Allrecipes",
+        "url": "https://www.allrecipes.com",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.allrecipes.com/thmb/Z9lwz1y0B5aX-cemPiTgpn5YB0k=/112x112/filters:no_upscale():max_bytes(150000):strip_icc()/allrecipes_logo_schema-867c69d2999b439a9eba923a445ccfe3.png",
+            "width": 112,
+            "height": 112
+        },
+        "brand": "Allrecipes",
+        "publishingPrinciples": "https://www.allrecipes.com/about-us-6648102#toc-editorial-guidelines",
+        "sameAs": [
+            "https://www.facebook.com/allrecipes",
+            "https://www.instagram.com/allrecipes/",
+            "https://www.pinterest.com/allrecipes/",
+            "https://www.tiktok.com/@allrecipes",
+            "https://www.youtube.com/user/allrecipes/videos",
+            "https://twitter.com/Allrecipes",
+            "https://flipboard.com/@Allrecipes",
+            "https://en.wikipedia.org/wiki/Allrecipes.com",
+            "http://linkedin.com/company/allrecipes.com"
+        ]
+    },
+    "name": "World&#39;s Best Honey Garlic Pork Chops",
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "ratingCount": "662"
+    },
+    "cookTime": "PT20M",
+    "nutrition": {
+        "@type": "NutritionInformation",
+        "calories": "290 kcal",
+        "carbohydrateContent": "14 g",
+        "cholesterolContent": "95 mg",
+        "fiberContent": "0 g",
+        "proteinContent": "30 g",
+        "saturatedFatContent": "4 g",
+        "sodiumContent": "419 mg",
+        "sugarContent": "12 g",
+        "fatContent": "13 g",
+        "unsaturatedFatContent": "0 g"
+    },
+    "prepTime": "PT10M",
+    "recipeCategory": [
+        "Entree",
+        "Dinner"
+    ],
+    "recipeCuisine": [
+        "American"
+    ],
+    "recipeIngredient": [
+        "0.5 cup ketchup",
+        "2.6666667461395 tablespoons honey",
+        "2 tablespoons low-sodium soy sauce",
+        "2 cloves garlic, crushed",
+        "6 (4 ounce) (1-inch thick) pork chops"
+    ],
+    "recipeInstructions": [
+        {
+            "@type": "HowToStep",
+            "image": [
+                {
+                    "@type": "ImageObject",
+                    "url": "https://www.allrecipes.com/thmb/cbAlF1wakrXSNdO03H4F2p0u5kU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Worlds-Best-Honey-Garlic-Pork-Chops-Step-001-403a89fea684436996646aea04f7b5fa.jpg"
+                }
+            ],
+            "text": "Preheat grill for medium heat and lightly oil the grate. Gather ingredients."
+        },
+        {
+            "@type": "HowToStep",
+            "image": [
+                {
+                    "@type": "ImageObject",
+                    "url": "https://www.allrecipes.com/thmb/DjQ3vZ8fxGKx9eKfKxXjC5sGZaU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Worlds-Best-Honey-Garlic-Pork-Chops-Step-003-fe714f5d40894833b4da51d45efcee6b.jpg"
+                }
+            ],
+            "text": "Whisk ketchup, honey, soy sauce, and garlic together in a bowl to make a glaze."
+        },
+        {
+            "@type": "HowToStep",
+            "image": [
+                {
+                    "@type": "ImageObject",
+                    "url": "https://www.allrecipes.com/thmb/7_6GYvt1RiYF-s2wY4DdGJoV0KY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Worlds-Best-Honey-Garlic-Pork-Chops-Step-005-341095f27b4d4840b1e990335144d0c1.jpg"
+                }
+            ],
+            "text": "Sear the pork chops on both sides on the preheated grill. Lightly brush glaze onto each side of the chops as they cook; grill until no longer pink in the center, about 7 to 9 minutes per side. An instant-read thermometer inserted into the center should read 145 degrees F (63 degrees C)."
+        },
+        {
+            "@type": "HowToStep",
+            "image": [
+                {
+                    "@type": "ImageObject",
+                    "url": "https://www.allrecipes.com/thmb/xijdHGCdDvaDbX0cZioCuboPPX4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/235158-worlds-best-honey-garlic-pork-chops-DDMFS-4x3-6d16c2884cdd407eb8e1e2f494791542.jpg"
+                }
+            ],
+            "text": "Serve hot and enjoy!"
+        }
+    ],
+    "recipeYield": [
+        "6"
+    ],
+    "totalTime": "PT30M",
+    "review": [
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "5"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "JohnT"
+            },
+            "reviewBody": "I don't normally go ga-ga over a recipe, even if I like it. I have to say, however, that these were the best pork chops I have ever eaten. I chose to bake the chops due to weather. My wife even told me to go online and give it five stars. No argument from me!!"
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "1"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Norma"
+            },
+            "reviewBody": "I made this step by step. and when it was finished no one liked it... NO ONE. not even myself. Sorry, this is not a keeper."
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "2"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Mark Anderson"
+            },
+            "reviewBody": "The sauce is way too sweet. I should have known with ketchup and honey, both already sweet ingredients. The two Tbs soy sauce didn't off-set the sweetness. Oh well."
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "4"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Rick"
+            },
+            "reviewBody": "I enjoyed the pork chops. They were easy to make, as advertised. I think it could use a bit of heat to balance out the sweetness of the honey and catchup."
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "5"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Taffy"
+            },
+            "reviewBody": "I don't have agrill. I put this glaze over thick boneless pork chops in my slow cooker for four hous. Yummmm!"
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "5"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "TonyB"
+            },
+            "reviewBody": "Made it just as written. A bit too catsup-y for our tastes...will cut back on that ingredient next time."
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "4"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Teresa Rogers"
+            },
+            "reviewBody": "This was a big hit and super simple. I will use thicker chops next time so they are on the heat a little longer to get a good glaze. These are definitely meant to be grilled not put on sheet in oven! I don’t understand the people cooking in oven then giving bad reviews because they end up with soupy mess. Common sense people!"
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "4"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "yekibe"
+            },
+            "reviewBody": "The simpleness of this recipe was awesome. I altered the measurements of all the ingredients. I also added lemon juice and spices to it. Great flavor. We ended up using the rest on our roasted vegetables."
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "5"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Carole"
+            },
+            "reviewBody": "This is easy to make and tastes delicious!"
+        },
+        {
+            "@type": "Review",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "5"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "NY2OH98"
+            },
+            "reviewBody": "Easy peasy. Very tasty. Sauce was enough for 4 boneless pork loin chops. Usually I only eat one as does my husband. It was so darn tasty. There were no leftovers. He said put it on the rotation. Served it with grilled squash and a caprese salad. There was nothing left over. Cook the chops about 7 minutes on each side on the grill. They were a little. Very moist"
+        }
+    ],
+    "mainEntityOfPage": {
+        "@type": [
+            "WebPage"
+        ],
+        "@id": "https://www.allrecipes.com/recipe/235158/worlds-best-honey-garlic-pork-chops/",
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                        "@id": "https://www.allrecipes.com/recipes/123/bbq-grilling/pork/",
+                        "name": "Pork"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item": {
+                        "@id": "https://www.allrecipes.com/recipes/2780/bbq-grilling/pork/pork-chops/",
+                        "name": "Pork Chops"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "item": {
+                        "@id": "https://www.allrecipes.com/recipe/235158/worlds-best-honey-garlic-pork-chops/",
+                        "name": "World&#39;s Best Honey Garlic Pork Chops"
+                    }
+                }
+            ]
+        },
+        "reviewedBy": [
+            {
+                "@type": "Person",
+                "name": "Allrecipes Test Kitchen",
+                "url": "https://www.allrecipes.com/allrecipes-test-kitchen-7553892"
+            }
+        ],
+        "lastReviewed": "2023-08-14T15:13:01.004-04:00"
+    }
+}

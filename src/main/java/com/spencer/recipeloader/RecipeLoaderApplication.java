@@ -24,7 +24,7 @@ public class RecipeLoaderApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println("hi :)");
 
-		grocyService.execute();
+		//grocyService.execute();
 	}
 
 }
