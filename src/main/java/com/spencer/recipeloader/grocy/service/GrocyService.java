@@ -71,30 +71,35 @@ public class GrocyService {
 
         for (File file : files) {
             RecipeDto recipeDto = recipeMLService.retrieveRecipe(file).getRecipeml().getRecipe();
-            Recipe recipe = recipeMapper.toRecipe(recipeDto);
 
-            log.debug("got the recipe {}", recipe);
-
-            updateQuantityMasterData(recipeDto);
-
-            List<QuantityUnit> updatedUserQuantityUnits = grocyClient.getQuantityUnits();
-
-            updateProductMasterData(recipeDto, updatedUserQuantityUnits);
-
-            List<Product> updatedUserIngredients = grocyClient.getProducts();
-
-            // add recipe (all you need to include is name and description)
-            // get back object w/ id attached
-            grocyClient.createRecipes(recipe);
-
-            // update the recipe_pos table; add records w/ addl mappings
-            // for each ingredient in the recipe, make a "recipe_pos" record
-            List<RecipesPos> recipePosWeNeedToAdd = generateRecipePosList(recipeDto, recipe, updatedUserIngredients, updatedUserQuantityUnits);
-
-            log.debug("we're gonna add the recipePos objects: {}", recipePosWeNeedToAdd);
-
-            grocyClient.createRecipePos(recipePosWeNeedToAdd);
+            parseDtoAndSendToGrocy(recipeDto);
         }
+    }
+
+    public void parseDtoAndSendToGrocy(RecipeDto recipeDto) {
+        Recipe recipe = recipeMapper.toRecipe(recipeDto);
+
+        log.debug("got the recipe {}", recipe);
+
+        updateQuantityMasterData(recipeDto);
+
+        List<QuantityUnit> updatedUserQuantityUnits = grocyClient.getQuantityUnits();
+
+        updateProductMasterData(recipeDto, updatedUserQuantityUnits);
+
+        List<Product> updatedUserIngredients = grocyClient.getProducts();
+
+        // add recipe (all you need to include is name and description)
+        // get back object w/ id attached
+        grocyClient.createRecipes(recipe);
+
+        // update the recipe_pos table; add records w/ addl mappings
+        // for each ingredient in the recipe, make a "recipe_pos" record
+        List<RecipesPos> recipePosWeNeedToAdd = generateRecipePosList(recipeDto, recipe, updatedUserIngredients, updatedUserQuantityUnits);
+
+        log.debug("we're gonna add the recipePos objects: {}", recipePosWeNeedToAdd);
+
+        grocyClient.createRecipePos(recipePosWeNeedToAdd);
     }
 
     /**

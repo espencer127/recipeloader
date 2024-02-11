@@ -1,11 +1,12 @@
 package com.spencer.recipeloader.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.recipeml.model.RecipeDto;
 import com.spencer.recipeloader.scraper.service.ScraperService;
 
@@ -13,15 +14,22 @@ import com.spencer.recipeloader.scraper.service.ScraperService;
 public class ApiController {
 
     ScraperService scraperService;
+    GrocyService grocyService;
 
-    public ApiController(ScraperService scraperService) {
+    public ApiController(ScraperService scraperService, GrocyService grocyService) {
         this.scraperService = scraperService;
+        this.grocyService = grocyService;
     }
 
-    @PostMapping("/scrape")
-    public String scrape(@RequestBody ScrapeRequest requestBody) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    @PostMapping(value = "/scrape", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RecipeDto scrape(@RequestBody ScrapeRequest requestBody) throws JsonProcessingException {
         RecipeDto result = scraperService.scrapeAllRecipes(requestBody.getURL());
-        return mapper.writeValueAsString(result);
+        return result;
+    }
+
+    @PostMapping("/insert")
+    public RecipeDto insert(@RequestBody RecipeDto recipe) {
+        grocyService.parseDtoAndSendToGrocy(recipe);
+        return recipe;
     }
 }
