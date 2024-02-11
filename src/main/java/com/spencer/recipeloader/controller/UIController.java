@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,13 +45,31 @@ public class UIController {
         return "index";
     }
 
-    @RequestMapping(value = "/scrapeExample", method = RequestMethod.GET)
+    @RequestMapping(value = "/ui/scrapeExample", method = RequestMethod.GET)
     public String getInfo(Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String exampleUrl = "https://www.allrecipes.com/recipe/235158/worlds-best-honey-garlic-pork-chops/";
         RecipeDto result = scraperService.scrapeAllRecipes(exampleUrl);
         model.addAttribute("recipeDto", mapper.writeValueAsString(result));
         model.addAttribute("url", exampleUrl);
+        return "ScrapeExample";
+    }
+
+    @RequestMapping(value="/ui/scrape", method = RequestMethod.GET)
+    public String showForm(Model model) {
+        model.addAttribute("scrapeRequest", new ScrapeRequest());
+
+        return "ScrapeForm";
+    }
+
+    @RequestMapping(value="/ui/scrapeRequest", method = RequestMethod.POST)
+    public String showRequest(@ModelAttribute("scrapeRequest") ScrapeRequest request, Model model) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String url = request.getURL();
+        RecipeDto result = scraperService.scrapeAllRecipes(url);
+        model.addAttribute("recipeDto", mapper.writeValueAsString(result));
+        model.addAttribute("url", url);
+
         return "ScrapeExample";
     }
 

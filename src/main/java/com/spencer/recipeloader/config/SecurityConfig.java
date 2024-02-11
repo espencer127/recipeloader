@@ -19,10 +19,7 @@ public class SecurityConfig {
                 .anyExchange().authenticated()
             )
             .csrf(customizer -> customizer.disable())
-            .httpBasic(Customizer.withDefaults())
-            .formLogin(formLogin -> formLogin
-                .loginPage("/login")
-            );
+            .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }

@@ -7,7 +7,7 @@
 </head>
 <body>
 	<h1>Form</h1>
-    <form action="#" th:action="@{/scrapeRequest}" th:object="${scrapeRequest}" method="post">
+    <form action="#" th:action="@{/ui/scrapeRequest}" th:object="${scrapeRequest}" method="post">
     	<p>URL: <input type="text" th:field="*{URL}" /></p>
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
