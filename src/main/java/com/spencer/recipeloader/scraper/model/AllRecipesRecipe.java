@@ -46,8 +46,12 @@ public class AllRecipesRecipe {
             String item = StringUtils.substringAfter(unitAndItem, " ");
             String qty = StringUtils.trim(recipIng.replaceAll("[^\\d.]", ""));
 
-            Amount amt = Amount.builder().qty(qty).unit(unit).build();
-            Ing ing = Ing.builder().amt(amt).item(item).build();
+            Amount amt = new Amount();
+            amt.setQty(qty);
+            amt.setUnit(unit);
+            Ing ing = new Ing();
+            ing.setAmt(amt);
+            ing.setItem(item);
 
             ingList.add(ing);
         }

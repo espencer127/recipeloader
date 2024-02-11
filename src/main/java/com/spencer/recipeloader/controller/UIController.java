@@ -1,24 +1,16 @@
 package com.spencer.recipeloader.controller;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.result.view.Rendering;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.recipeml.model.RecipeDto;
 import com.spencer.recipeloader.scraper.service.ScraperService;
 
@@ -29,10 +21,12 @@ public class UIController {
 
     ApiController apiController;
     ScraperService scraperService;
+    GrocyService grocyService;
 
-    public UIController(ApiController apiController, ScraperService scraperService) {
+    public UIController(ApiController apiController, ScraperService scraperService, GrocyService grocyService) {
         this.apiController = apiController;
         this.scraperService = scraperService;
+        this.grocyService = grocyService;
     }
 
     @GetMapping("/")
@@ -70,7 +64,17 @@ public class UIController {
         model.addAttribute("recipeDto", mapper.writeValueAsString(result));
         model.addAttribute("url", url);
 
-        return "ScrapeExample";
+        return "ScrapedRecipe";
+    }
+
+    @RequestMapping(value="/ui/insertScrape", method = RequestMethod.POST)
+    public String insertRecipe(@ModelAttribute("recipeDto") RecipeDto scrape, Model model) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        grocyService.parseDtoAndSendToGrocy(scrape);
+        
+        model.addAttribute("recipeDto", mapper.writeValueAsString(scrape));
+
+        return "InsertResult";
     }
 
 

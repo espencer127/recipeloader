@@ -57,6 +57,7 @@ public interface RecipeMapper {
     @Mapping(expression="java(allRecipesRecipe.createYield())", target="head.yield")
     @Mapping(expression="java(allRecipesRecipe.createIngredients())", target="ingredients.ing")
     @Mapping(expression= "java(allRecipesRecipe.getInstructions())", target="directions.step")
+    @Mapping(source = "name", target = "head.title")
     RecipeDto toRecipeDto(AllRecipesRecipe allRecipesRecipe);
 
 

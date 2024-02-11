@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <h1>URL</h1>
+        <form action="#" th:action="@{/ui/insertScrape}" th:object="${recipeDto}" method="post">
+            <p th:text="${url}">Subject</p>
+            <h1>Scraped Dto</h1>
+            <p th:text="${recipeDto}" contenteditable="true"></p>
+            <p><input type="submit" value="Submit" /></p>
+        </form>
+    </body>
+</html>
