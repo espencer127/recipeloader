@@ -9,19 +9,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.service.GrocyService;
-import com.spencer.recipeloader.recipeml.model.RecipeDto;
-import com.spencer.recipeloader.scraper.service.ScraperService;
+import com.spencer.recipeloader.retrieval.ScraperServiceImpl;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 
 
 @Controller
 public class UIController {
 
     ApiController apiController;
-    ScraperService scraperService;
+    ScraperServiceImpl scraperService;
     GrocyService grocyService;
 
-    public UIController(ApiController apiController, ScraperService scraperService, GrocyService grocyService) {
+    public UIController(ApiController apiController, ScraperServiceImpl scraperService, GrocyService grocyService) {
         this.apiController = apiController;
         this.scraperService = scraperService;
         this.grocyService = grocyService;
@@ -41,7 +42,9 @@ public class UIController {
     public String getInfo(Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String exampleUrl = "https://www.allrecipes.com/recipe/235158/worlds-best-honey-garlic-pork-chops/";
-        RecipeDto result = scraperService.scrapeAllRecipes(exampleUrl);
+        ScrapeRequest req = new ScrapeRequest();
+        req.setURL(exampleUrl);
+        RecipeDto result = scraperService.retrieveRecipe(req);
         model.addAttribute("recipeDto", mapper.writeValueAsString(result));
         model.addAttribute("url", exampleUrl);
         return "ScrapeExample";
@@ -58,7 +61,7 @@ public class UIController {
     public String showRequest(@ModelAttribute("scrapeRequest") ScrapeRequest request, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String url = request.getURL();
-        RecipeDto result = scraperService.scrapeAllRecipes(url);
+        RecipeDto result = scraperService.retrieveRecipe(request);
         model.addAttribute("recipeDto", mapper.writeValueAsString(result));
         model.addAttribute("url", url);
 
@@ -68,7 +71,7 @@ public class UIController {
     @RequestMapping(value="/ui/insertScrape", method = RequestMethod.POST)
     public String insertRecipe(@ModelAttribute("recipeDto") RecipeDto scrape, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        grocyService.parseDtoAndSendToGrocy(scrape);
+        grocyService.sendInfoToGrocy(scrape);
         
         model.addAttribute("recipeDto", mapper.writeValueAsString(scrape));
 

@@ -1,6 +1,5 @@
 package com.spencer.recipeloader.grocy.service;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,9 +18,9 @@ import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.mapper.RecipeMapper;
-import com.spencer.recipeloader.recipeml.model.Ing;
-import com.spencer.recipeloader.recipeml.model.RecipeDto;
-import com.spencer.recipeloader.recipeml.service.RecipeMLService;
+import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.retrieval.model.recipeml.Ing;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,11 +31,11 @@ public class GrocyService {
     String recipeFilePath;
     String recipesFolderPath;
 
-    public RecipeMLService recipeMLService;
+    public FileRetrieverServiceImpl recipeMLService;
     public RecipeMapper recipeMapper;
     public GrocyClient grocyClient;
 
-    public GrocyService(@Value("${paths.recipe-file}") String recipeFilePath, @Value("${paths.recipes-folder}") String recipesFolderPath, RecipeMLService recipeMLService, RecipeMapper recipeMapper, GrocyClient grocyClient) {
+    public GrocyService(@Value("${paths.recipe-file}") String recipeFilePath, @Value("${paths.recipes-folder}") String recipesFolderPath, FileRetrieverServiceImpl recipeMLService, RecipeMapper recipeMapper, GrocyClient grocyClient) {
         this.recipeFilePath = recipeFilePath;
         this.recipesFolderPath = recipesFolderPath;
         this.recipeMLService = recipeMLService;
@@ -58,26 +57,7 @@ public class GrocyService {
      * <li>API: POST make the recipe ("recipe")</li>
      * <li>API: POST add each ingredient to the recipe ("recipe_pos")</li>
      */
-    public void execute() {
-        List<File> files = new ArrayList<>();
-
-        if (StringUtils.isNotBlank(recipesFolderPath)) {
-            File folder = new File(recipesFolderPath);
-            File[] listOfFiles = folder.listFiles();
-            files.addAll(Arrays.asList(listOfFiles));
-        } else {
-            File file = new File(recipeFilePath);
-            files.add(file);
-        }
-
-        for (File file : files) {
-            RecipeDto recipeDto = recipeMLService.retrieveRecipe(file).getRecipeml().getRecipe();
-
-            parseDtoAndSendToGrocy(recipeDto);
-        }
-    }
-
-    public void parseDtoAndSendToGrocy(RecipeDto recipeDto) {
+    public void sendInfoToGrocy(RecipeDto recipeDto) {
         Recipe recipe = recipeMapper.toRecipe(recipeDto);
 
         log.debug("got the recipe {}", recipe);
@@ -90,12 +70,9 @@ public class GrocyService {
 
         List<Product> updatedUserIngredients = grocyClient.getProducts();
 
-        // add recipe (all you need to include is name and description)
-        // get back object w/ id attached
-        grocyClient.createRecipe(recipe);
+        //TODO: This recipe should include the categories but it doesn't
+        recipe = grocyClient.createRecipe(recipe);
 
-        // update the recipe_pos table; add records w/ addl mappings
-        // for each ingredient in the recipe, make a "recipe_pos" record
         List<RecipesPos> recipePosWeNeedToAdd = generateRecipePosList(recipeDto, recipe, updatedUserIngredients, updatedUserQuantityUnits);
 
         log.debug("we're gonna add the recipePos objects: {}", recipePosWeNeedToAdd);
@@ -151,7 +128,6 @@ public class GrocyService {
             .filter(x -> StringUtils.equalsIgnoreCase(x.getItem(), ing))
             .findFirst();
 
-            log.info("Ing {}", ing);
             Ing matchingIng = matchingIngMaybe.get();
 
             Optional<QuantityUnit> unitToAddToProductMaybe = updatedUserQuantityUnits.stream()
@@ -179,12 +155,12 @@ public class GrocyService {
                 }
             }
 
-            log.info("For ingredient {} the unitToAddToProduct is {}", ing, unitToAddToProduct);
+            log.debug("For ingredient {} the unitToAddToProduct is {}", ing, unitToAddToProduct);
 
             // TODO: do we gotta worry about plurals up there? ^
             Integer qtyId = unitToAddToProduct.getId();
 
-            log.info("For ingredient {} we're gonna make a product with qtyId {}", ing, qtyId);
+            log.debug("For ingredient {} we're gonna make a product with qtyId {}", ing, qtyId);
 
             Product product = recipeMapper.toProductPostBody(ing, qtyId);
 

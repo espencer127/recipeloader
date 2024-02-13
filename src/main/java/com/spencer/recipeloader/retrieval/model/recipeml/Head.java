@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.recipeml.model;
+package com.spencer.recipeloader.retrieval.model.recipeml;
 
 import lombok.Data;
 

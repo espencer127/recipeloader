@@ -18,12 +18,12 @@ import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.grocy.service.GrocyClient;
 import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.mapper.RecipeMapper;
-import com.spencer.recipeloader.recipeml.model.RecipeDto;
-import com.spencer.recipeloader.recipeml.service.RecipeMLService;
+import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 
 public class GrocyServiceTests {
 
-    private RecipeMLService recipeMLService;
+    private FileRetrieverServiceImpl recipeMLService;
 
     public RecipeMapper recipeMapper;
 
@@ -36,7 +36,7 @@ public class GrocyServiceTests {
     @Test
     public void whenGenerateRecipePosList_ShouldOnlyCreateOneRecipePosPerProduct() {
 
-        recipeMLService = new RecipeMLService();
+        recipeMLService = new FileRetrieverServiceImpl();
 
         RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
 
@@ -69,7 +69,7 @@ public class GrocyServiceTests {
         String fractionQty = "1 1/2";
         Integer expected = 2;
 
-        recipeMLService = new RecipeMLService();
+        recipeMLService = new FileRetrieverServiceImpl();
 
         RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
 

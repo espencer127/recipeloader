@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -222,6 +223,7 @@ public class GrocyClient {
     public Recipe createRecipe(Recipe recipe) {
         try {
             GrocyPostResponse apiResponse = postObject((Entity.RECIPES.label), mapper.writeValueAsString(recipe));
+            log.debug("Got the response: {}", apiResponse);
 
             recipe.setId(apiResponse.getCreated_object_id());
         } catch (JsonProcessingException e) {
@@ -258,6 +260,7 @@ public class GrocyClient {
         String api = "api";
         String objects = "objects";
         GrocyPostResponse grocyResponse = new GrocyPostResponse();
+        List<String> errors = new ArrayList<>();;
 
         URI buildUri = UriComponentsBuilder.fromUriString("http://localhost")
                 .port(grocyDockerPort)
@@ -287,11 +290,19 @@ public class GrocyClient {
             if (StringUtils.contains(e.getMessage(),
                     "Provided qu_id doesn't have a related conversion for that product")) {
                 log.error(e.getMessage());
-                log.error(
-                        "This means we were unable to associate this ingredient to this recipe. To fix this issue, first create a conversion between the Grocy product's quantity and the recipe ingredient's quantity. Then re-run a POST call to create the recipe_pos with the URI {} and body {}",
-                        buildUri, body);
+                errors.add(
+                        "We were unable to associate an ingredient to this recipe. To fix this issue, first create a conversion between the Grocy product's quantity and the recipe ingredient's quantity. Then re-run a POST call to create the recipe_pos with the URI" + buildUri + " and body " +
+                        body);
+            } else {
+                errors.add(e.getMessage());
             }
 
+        }
+
+        if (!errors.isEmpty()) {    
+            String[] joinedMsg = {StringUtils.join(errors, "; ")};
+            String concatArr = StringUtils.join(joinedMsg, "; ");
+            throw new RestClientException(concatArr);
         }
 
         return grocyResponse;

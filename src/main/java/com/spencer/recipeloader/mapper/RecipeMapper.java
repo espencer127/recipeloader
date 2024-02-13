@@ -8,14 +8,15 @@ import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.model.RecipesPos;
-import com.spencer.recipeloader.recipeml.model.RecipeDto;
-import com.spencer.recipeloader.scraper.model.AllRecipesRecipe;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
+import com.spencer.recipeloader.retrieval.model.scraper.AllRecipesRecipe;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RecipeMapper {
 
     @Mapping(source = "head.title", target="name")
     @Mapping(source = "directions.step", target = "description")
+    @Mapping(expression = "java(recipeDto.getHead().getCategories().createCategories())", target="userFields.category")
     Recipe toRecipe(RecipeDto recipeDto);
 
     /** convert string to products post body
@@ -55,6 +56,8 @@ public interface RecipeMapper {
     //TODO: Keep going here sunday
      //@Mapping(expression= "java(StringUtils.join(Arrays.asList(recipeInstructions).stream().map(x -> x.getText()).collect(Collectors.toList()), \"<br>\"))", target="directions.step")
     @Mapping(expression="java(allRecipesRecipe.createYield())", target="head.yield")
+    @Mapping(source = "allRecipesRecipe.recipeCategory", target="head.categories.cat")
+
     @Mapping(expression="java(allRecipesRecipe.createIngredients())", target="ingredients.ing")
     @Mapping(expression= "java(allRecipesRecipe.getInstructions())", target="directions.step")
     @Mapping(source = "name", target = "head.title")

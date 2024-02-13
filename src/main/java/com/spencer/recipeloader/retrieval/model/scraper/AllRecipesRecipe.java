@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.scraper.model;
+package com.spencer.recipeloader.retrieval.model.scraper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,8 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.spencer.recipeloader.recipeml.model.Amount;
-import com.spencer.recipeloader.recipeml.model.Ing;
+import com.spencer.recipeloader.retrieval.model.recipeml.Amount;
+import com.spencer.recipeloader.retrieval.model.recipeml.Ing;
 
 import lombok.Data;
 

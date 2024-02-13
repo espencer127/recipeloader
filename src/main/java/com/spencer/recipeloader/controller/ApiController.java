@@ -7,29 +7,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.spencer.recipeloader.grocy.service.GrocyService;
-import com.spencer.recipeloader.recipeml.model.RecipeDto;
-import com.spencer.recipeloader.scraper.service.ScraperService;
+import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.retrieval.ScraperServiceImpl;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 
 @RestController
 public class ApiController {
 
-    ScraperService scraperService;
+    ScraperServiceImpl scraperService;
+    FileRetrieverServiceImpl fileRetrieverService;
     GrocyService grocyService;
 
-    public ApiController(ScraperService scraperService, GrocyService grocyService) {
+    public ApiController(ScraperServiceImpl scraperService, FileRetrieverServiceImpl fileRetrieverService, GrocyService grocyService) {
         this.scraperService = scraperService;
+        this.fileRetrieverService = fileRetrieverService;
         this.grocyService = grocyService;
     }
 
     @PostMapping(value = "/scrape", produces = MediaType.APPLICATION_JSON_VALUE)
     public RecipeDto scrape(@RequestBody ScrapeRequest requestBody) throws JsonProcessingException {
-        RecipeDto result = scraperService.scrapeAllRecipes(requestBody.getURL());
+        RecipeDto result = scraperService.retrieveRecipe(requestBody);
+        return result;
+    }
+
+    @PostMapping(value = "/import", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RecipeDto importFile(@RequestBody ImportRequest requestBody) throws JsonProcessingException {
+        RecipeDto result = fileRetrieverService.retrieveRecipe(requestBody);
         return result;
     }
 
     @PostMapping("/insert")
     public RecipeDto insert(@RequestBody RecipeDto recipe) {
-        grocyService.parseDtoAndSendToGrocy(recipe);
+        grocyService.sendInfoToGrocy(recipe);
         return recipe;
     }
 }

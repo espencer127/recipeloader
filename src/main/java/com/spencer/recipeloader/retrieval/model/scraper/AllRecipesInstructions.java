@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.grocy.model;
+package com.spencer.recipeloader.retrieval.model.scraper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,9 +9,6 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class Recipe {
-    private Integer id;
-    private String name;
-    private String description;
-    private UserFields userfields;
+public class AllRecipesInstructions {
+    private String text;
 }

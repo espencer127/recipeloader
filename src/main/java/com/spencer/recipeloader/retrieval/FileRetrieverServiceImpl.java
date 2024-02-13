@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.recipeml.service;
+package com.spencer.recipeloader.retrieval;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,17 +11,19 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.spencer.recipeloader.recipeml.model.Ing;
-import com.spencer.recipeloader.recipeml.model.RecipeMLWrapper;
+import com.spencer.recipeloader.controller.ImportRequest;
+import com.spencer.recipeloader.retrieval.model.recipeml.Ing;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeMLWrapper;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class RecipeMLService {
+public class FileRetrieverServiceImpl implements RecipeRetrieverService<ImportRequest> {
 
-    public RecipeMLService() {
+    public FileRetrieverServiceImpl() {
     }
 
     /**
@@ -30,9 +32,11 @@ public class RecipeMLService {
      * So i had to Deserialize XML from the file into a string, then a Java object
      * @return
      */
-    public RecipeMLWrapper retrieveRecipe(File file) {
+    @Override
+    public RecipeDto retrieveRecipe(ImportRequest input) {
 
-        // Create mappers
+        File file = new File(input.getURL());
+        
         ObjectMapper mapper = new ObjectMapper();
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -48,13 +52,14 @@ public class RecipeMLService {
 
             fixRecipe(recipe);
 
-            return recipe;
+            return recipe.getRecipeml().getRecipe();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return null;
     }
+
 
     /**
      * If the recipe has any ingredients with empty units, fill it with 'unit'

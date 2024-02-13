@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.scraper.service;
+package com.spencer.recipeloader.retrieval;
 
 import java.io.IOException;
 
@@ -10,24 +10,28 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spencer.recipeloader.controller.ScrapeRequest;
 import com.spencer.recipeloader.mapper.RecipeMapper;
-import com.spencer.recipeloader.recipeml.model.RecipeDto;
-import com.spencer.recipeloader.scraper.model.AllRecipesRecipe;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
+import com.spencer.recipeloader.retrieval.model.scraper.AllRecipesRecipe;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class ScraperService {
+public class ScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest> {
 
     RecipeMapper recipeMapper;
 
-    public ScraperService(RecipeMapper recipeMapper) {
+    public ScraperServiceImpl(RecipeMapper recipeMapper) {
         this.recipeMapper = recipeMapper;
     }
 
-    public RecipeDto scrapeAllRecipes(String url) {
+    @Override
+    public RecipeDto retrieveRecipe(ScrapeRequest input) {
 
+        String url = input.getURL();
+        
         Document doc;
         ObjectMapper mapper = new ObjectMapper();
 
@@ -58,7 +62,7 @@ public class ScraperService {
         return null;
     }
 
-    public String cleanseRecipe(String data) {
+    private String cleanseRecipe(String data) {
         if (data.startsWith("[")) {
             String working = StringUtils.stripStart(data, "[");
             String working2 = StringUtils.stripEnd(working, "]");
@@ -100,4 +104,5 @@ public class ScraperService {
 
         return null;
     }
+
 }
