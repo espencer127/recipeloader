@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,12 +31,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GrocyClient {
 
-    private final WebClient grocyWebClient;
+    private final RestClient grocyWebClient;
     private Integer grocyDockerPort;
     private RecipeMapper recipeMapper;
     private ObjectMapper mapper;
 
-    public GrocyClient(WebClient grocyWebClient,
+    public GrocyClient(RestClient grocyWebClient,
             @Value("${grocy.docker.port}") Integer grocyDockerPort,
             RecipeMapper recipeMapper, ObjectMapper mapper) {
         this.grocyWebClient = grocyWebClient;
@@ -47,6 +47,10 @@ public class GrocyClient {
 
     public List<Product> getProducts() {
         ResponseEntity<String> result = getObject(Entity.PRODUCTS.label);
+        
+        if (result == null) {
+            return null;
+        }
 
         try {
             Product[] products = mapper.readValue(result.getBody(), Product[].class);
@@ -93,6 +97,10 @@ public class GrocyClient {
 
     public List<QuantityUnit> getQuantityUnits() {
         ResponseEntity<String> result = getObject(Entity.QUANTITY_UNITS.label);
+
+        if (result == null) {
+            return null;
+        }
 
         try {
             QuantityUnit[] quantityUnits = mapper.readValue(result.getBody(), QuantityUnit[].class);
@@ -141,15 +149,17 @@ public class GrocyClient {
                 .pathSegment(api, objects, entity)
                 .build().encode().toUri();
 
-        ResponseEntity<String> grocyResponse = grocyWebClient.get()
-                .uri(buildUri)
-                .retrieve()
-                .toEntity(String.class)
-                .block();
+            try {
+                return grocyWebClient.get()
+                        .uri(buildUri)
+                        .retrieve()
+                        .toEntity(String.class);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
-        log.debug("got the object {}", grocyResponse);
-
-        return grocyResponse;
+            return null;
     }
 
     /**
@@ -209,7 +219,7 @@ public class GrocyClient {
         return finalResponse;
     }
 
-    public Recipe createRecipes(Recipe recipe) {
+    public Recipe createRecipe(Recipe recipe) {
         try {
             GrocyPostResponse apiResponse = postObject((Entity.RECIPES.label), mapper.writeValueAsString(recipe));
 
@@ -262,11 +272,9 @@ public class GrocyClient {
             grocyResponse = grocyWebClient.post()
                     .uri(buildUri)
                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                    .bodyValue(body)
+                    .body(body)
                     .retrieve()
-                    .onStatus(
-                            httpStatus -> (!httpStatus.is2xxSuccessful()),
-                            response -> response.bodyToMono(String.class).map(Exception::new)) 
+                    //need to make an 'errorhandler' instead of response
                             //response -> new Exception(response.toString()))// response.bodyToMono(String.class).map(Exception::new))
                     // (response -> response.bodyToMono(String.class).flatMap(error ->
                     // Mono.error(new Exception(error))
@@ -274,8 +282,7 @@ public class GrocyClient {
 
                     // .onStatus(httpStatus -> httpStatus.value() != 200,
                     // error -> Mono.error(new Exception("Erorr fulfilling POST request")))
-                    .bodyToMono(GrocyPostResponse.class)
-                    .block();
+                    .toEntity(GrocyPostResponse.class).getBody();
         } catch (Exception e) {
             if (StringUtils.contains(e.getMessage(),
                     "Provided qu_id doesn't have a related conversion for that product")) {

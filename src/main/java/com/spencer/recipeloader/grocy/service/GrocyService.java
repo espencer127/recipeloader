@@ -3,6 +3,7 @@ package com.spencer.recipeloader.grocy.service;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -91,7 +92,7 @@ public class GrocyService {
 
         // add recipe (all you need to include is name and description)
         // get back object w/ id attached
-        grocyClient.createRecipes(recipe);
+        grocyClient.createRecipe(recipe);
 
         // update the recipe_pos table; add records w/ addl mappings
         // for each ingredient in the recipe, make a "recipe_pos" record
@@ -117,8 +118,6 @@ public class GrocyService {
         log.debug("got the existing ingredients {}", existingUserIngredients);
 
         List<String> ingredientNamesWeNeedToAdd = findIngredientsWeNeedToAdd(recipeDto, existingUserIngredients);
-        // FIXME: products need the qty's before we add them - after we do that, should
-        // fix other fixme below?
 
         List<Product> ingredientsWeNeedToAdd = addQtyUnitsToIngredients(ingredientNamesWeNeedToAdd,
                 updatedUserQuantityUnits, recipeDto);
@@ -215,9 +214,17 @@ public class GrocyService {
         }
 
         List<QuantityUnit> updatedQuantityUnitsList = new ArrayList<>();
-        updatedQuantityUnitsList.addAll(existingUserQuantityUnits);
-        updatedQuantityUnitsList.addAll(addedQuantityUnits);
+        addAllIfNotNull(updatedQuantityUnitsList, existingUserQuantityUnits);
+        addAllIfNotNull(updatedQuantityUnitsList, addedQuantityUnits);
+        //updatedQuantityUnitsList.addAll(existingUserQuantityUnits);
+        //updatedQuantityUnitsList.addAll(addedQuantityUnits);
     }
+
+    public static <E> void addAllIfNotNull(List<E> list, Collection<? extends E> c) {
+    if (c != null) {
+        list.addAll(c);
+    }
+}
 
     /**
      * For each ingredient in the recipe, make a "recipe_pos" record w/ the
@@ -333,9 +340,9 @@ public class GrocyService {
                 nominator = nominator + addlValue;
             }
 
-            returnValue = Math.ceilDiv(nominator, denominator);
+            returnValue = Integer.parseInt(Long.toString(Math.round(Math.ceil((nominator / denominator)))));
         } else {
-            returnValue = Integer.parseInt(Double.toString(Math.ceil(Double.parseDouble(ratio))));
+            returnValue = Integer.parseInt(Long.toString(Math.round(Math.ceil(Double.parseDouble(ratio)))));
         }
 
         return returnValue;
@@ -379,9 +386,14 @@ public class GrocyService {
 
     //TODO: need to match on both qty and name
     public List<String> findIngredientsWeNeedToAdd(RecipeDto recipeDto, List<Product> existingUserIngredients) {
-        List<String> existingIngredients = existingUserIngredients
+
+        List<String> existingIngredients = new ArrayList<>();
+        
+        if (existingUserIngredients != null) {
+            existingIngredients = existingUserIngredients
                 .stream().map(x -> x.getName().trim().toLowerCase())
                 .collect(Collectors.toList());
+        }
 
         List<Ing> neededIngredients = Arrays.asList(recipeDto.getIngredients().getIng());
 

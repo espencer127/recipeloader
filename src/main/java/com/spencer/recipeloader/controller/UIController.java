@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.reactive.result.view.Rendering;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +13,6 @@ import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.recipeml.model.RecipeDto;
 import com.spencer.recipeloader.scraper.service.ScraperService;
 
-import reactor.core.publisher.Mono;
 
 @Controller
 public class UIController {
@@ -30,8 +28,8 @@ public class UIController {
     }
 
     @GetMapping("/")
-    public Mono<Rendering> home() {
-        return Mono.just(Rendering.view("index").build());
+    public String home() {
+        return "index";
     }
 
     @RequestMapping("/index")

@@ -2,24 +2,23 @@ package com.spencer.recipeloader.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
-@EnableWebFluxSecurity
+
+@EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    @Bean(name = {"securityFilterChain"})
+    public SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeExchange(exchanges -> exchanges
-                .pathMatchers("/*").permitAll()
-                .anyExchange().authenticated()
+            .authorizeHttpRequests(exchanges -> exchanges
+                .requestMatchers("/*").permitAll()
+                .anyRequest().authenticated()
             )
-            .csrf(customizer -> customizer.disable())
-            .httpBasic(Customizer.withDefaults());
+            .csrf(customizer -> customizer.disable());
 
         return http.build();
     }
