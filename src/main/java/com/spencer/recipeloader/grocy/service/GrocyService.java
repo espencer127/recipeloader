@@ -2,7 +2,6 @@ package com.spencer.recipeloader.grocy.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -68,8 +67,6 @@ public class GrocyService {
         updateProductMasterData(recipeDto, updatedUserQuantityUnits);
 
         List<Product> updatedUserIngredients = grocyClient.getProducts();
-
-        //TODO: upload picture here then add the file name to the recipe payload
 
         recipe = grocyClient.createRecipe(recipe);
 

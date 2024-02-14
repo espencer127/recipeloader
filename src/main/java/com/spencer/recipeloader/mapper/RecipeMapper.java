@@ -8,6 +8,7 @@ import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.model.RecipesPos;
+import com.spencer.recipeloader.retrieval.model.recipeml.ImageInfo;
 import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 import com.spencer.recipeloader.retrieval.model.scraper.AllRecipesRecipe;
 
@@ -52,16 +53,12 @@ public interface RecipeMapper {
 
     RecipesPos toRecipePosPostBodyWithVariableAmount(Integer product_id, Integer recipe_id, Integer amount, String variable_amount, Integer qu_id);
 
-
-    //TODO: Keep going here sunday
-     //@Mapping(expression= "java(StringUtils.join(Arrays.asList(recipeInstructions).stream().map(x -> x.getText()).collect(Collectors.toList()), \"<br>\"))", target="directions.step")
     @Mapping(expression="java(allRecipesRecipe.createYield())", target="head.yield")
     @Mapping(source = "allRecipesRecipe.recipeCategory", target="head.categories.cat")
 
     @Mapping(expression="java(allRecipesRecipe.createIngredients())", target="ingredients.ing")
     @Mapping(expression= "java(allRecipesRecipe.getInstructions())", target="directions.step")
-    @Mapping(source = "name", target = "head.title")
-    RecipeDto toRecipeDto(AllRecipesRecipe allRecipesRecipe);
-
+    @Mapping(source = "allRecipesRecipe.name", target = "head.title")
+    RecipeDto toRecipeDto(AllRecipesRecipe allRecipesRecipe, ImageInfo imgInfo);
 
 }

@@ -314,7 +314,7 @@ public class GrocyClient {
         String api = "api";
         String files = "files";
         GrocyPostResponse grocyResponse = new GrocyPostResponse();
-        List<String> errors = new ArrayList<>();;
+        List<String> errors = new ArrayList<>();
 
         URI buildUri = UriComponentsBuilder.fromUriString("http://localhost")
                 .port(grocyDockerPort)

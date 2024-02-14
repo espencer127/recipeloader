@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.service.GrocyService;
+import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
 import com.spencer.recipeloader.retrieval.ScraperServiceImpl;
 import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 
@@ -20,11 +21,13 @@ public class UIController {
 
     ApiController apiController;
     ScraperServiceImpl scraperService;
+    FileRetrieverServiceImpl fileRetrieverService;
     GrocyService grocyService;
 
-    public UIController(ApiController apiController, ScraperServiceImpl scraperService, GrocyService grocyService) {
+    public UIController(ApiController apiController, ScraperServiceImpl scraperService, FileRetrieverServiceImpl fileRetrieverService, GrocyService grocyService) {
         this.apiController = apiController;
         this.scraperService = scraperService;
+        this.fileRetrieverService = fileRetrieverService;
         this.grocyService = grocyService;
     }
 
@@ -68,7 +71,15 @@ public class UIController {
         return "ScrapedRecipe";
     }
 
-    @RequestMapping(value="/ui/insertScrape", method = RequestMethod.POST)
+    /**
+     * Handles the RecipeDTO. This DTO could be generated from multiple sources (ie. the app previously parsing
+     * either a website or a local file)
+     * @param scrape
+     * @param model
+     * @return
+     * @throws JsonProcessingException
+     */
+    @RequestMapping(value="/ui/insertRecipe", method = RequestMethod.POST)
     public String insertRecipe(@ModelAttribute("recipeDto") RecipeDto scrape, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         grocyService.sendInfoToGrocy(scrape);
@@ -78,5 +89,22 @@ public class UIController {
         return "InsertResult";
     }
 
+    @RequestMapping(value="/ui/import", method = RequestMethod.GET)
+    public String showImportForm(Model model) {
+        model.addAttribute("importRequest", new ImportRequest());
+
+        return "ScrapeForm";
+    }
+
+    @RequestMapping(value="/ui/importRequest", method = RequestMethod.POST)
+    public String showParsedImportObject(@ModelAttribute("scrapeRequest") ImportRequest request, Model model) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String url = request.getFilePath();
+        RecipeDto result = fileRetrieverService.retrieveRecipe(request);
+        model.addAttribute("recipeDto", mapper.writeValueAsString(result));
+        model.addAttribute("url", url);
+
+        return "ScrapedRecipe";
+    }
 
 }

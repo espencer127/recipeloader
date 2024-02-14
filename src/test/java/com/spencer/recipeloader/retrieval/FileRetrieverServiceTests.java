@@ -25,7 +25,7 @@ public class FileRetrieverServiceTests {
     @Test
     public void retrieveRecipeTest_ShouldLoadFile() {
         ImportRequest imp = new ImportRequest();
-        imp.setURL("src\\test\\resources\\LemonBars.xml");
+        imp.setFilePath("src\\test\\resources\\LemonBars.xml");
 
         RecipeDto rec = fileRetrieverService.retrieveRecipe(imp);
 
@@ -41,7 +41,7 @@ public class FileRetrieverServiceTests {
     @Test
     public void retrieveRecipeTest_ShouldContainCategories() {
         ImportRequest imp = new ImportRequest();
-        imp.setURL("src\\test\\resources\\LemonBars.xml");
+        imp.setFilePath("src\\test\\resources\\LemonBars.xml");
 
         RecipeDto rec = fileRetrieverService.retrieveRecipe(imp);
 

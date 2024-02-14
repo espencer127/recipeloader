@@ -17,6 +17,7 @@ This app shoves RecipeML recipes into a docker-run grocy app.
 - When importing from AllRecipes, map the prep/cook/total time to user fields
 - Support for \<ing-div\> tag in ingredients block
 - scrape images from websites
+- the 'ScrapedRecipe' page should show you the image in a box, and optionally provide you a way to edit the image path
 - add images to recipes in grocy
 - refactor the process for importing multiple recipes (ie whittle down to unique ingredients in all the recipes), not just one recipe at a time
 

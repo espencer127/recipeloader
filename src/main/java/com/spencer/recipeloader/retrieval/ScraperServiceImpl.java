@@ -13,6 +13,8 @@ import org.springframework.web.client.RestClientException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.controller.ScrapeRequest;
 import com.spencer.recipeloader.mapper.RecipeMapper;
+import com.spencer.recipeloader.retrieval.image.ImageRetriever;
+import com.spencer.recipeloader.retrieval.model.recipeml.ImageInfo;
 import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 import com.spencer.recipeloader.retrieval.model.scraper.AllRecipesRecipe;
 
@@ -24,10 +26,12 @@ public class ScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest>
 
     RecipeMapper recipeMapper;
     JSouper jsouper;
+    ImageRetriever imageRetriever;
 
-    public ScraperServiceImpl(RecipeMapper recipeMapper, JSouper jsouper) {
+    public ScraperServiceImpl(RecipeMapper recipeMapper, JSouper jsouper, ImageRetriever imageRetriever) {
         this.recipeMapper = recipeMapper;
         this.jsouper = jsouper;
+        this.imageRetriever = imageRetriever;
     }
 
     @Override
@@ -41,32 +45,28 @@ public class ScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest>
         try {
             doc = jsouper.getDoc(url);
             
-            //Elements scriptElements = doc.getElementsByTag("script");
             Element jsonScript = doc.getElementsByAttributeValue("type", "application/ld+json").first();
-            
-            Element imgEl = doc.select("img").first();
-            
-            String imgSrc = imgEl.attr("data-src");
-            String data = cleanseRecipe(jsonScript.data());
-            
-            
-            log.debug("HR element is {}", data);
 
-            AllRecipesRecipe rec = mapper.readValue(data, AllRecipesRecipe.class);
+            AllRecipesRecipe recipe = mapper.readValue(cleanseRecipe(jsonScript.data()), AllRecipesRecipe.class);
 
-            AllRecipesRecipe recipe = rec;
+            ImageInfo imgInfo = downloadImage(doc);
 
-            RecipeDto result = recipeMapper.toRecipeDto(recipe);
-
-            log.debug("done");
+            RecipeDto result = recipeMapper.toRecipeDto(recipe, imgInfo);
 
             return result;
 
         } catch (IOException e) {
             throw new RestClientException(e.getMessage());
         }
-
     } 
+
+    private ImageInfo downloadImage(Document doc) {
+        String imgSrc = doc.select("img").first().attr("data-src");
+
+        ImageInfo imgInfo = imageRetriever.downloadImage(imgSrc);
+        
+        return imgInfo;
+    }
 
     private String cleanseRecipe(String data) {
         if (data.startsWith("[")) {

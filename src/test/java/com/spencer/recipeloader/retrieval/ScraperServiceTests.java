@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.controller.ScrapeRequest;
 import com.spencer.recipeloader.mapper.RecipeMapper;
+import com.spencer.recipeloader.retrieval.image.ImageRetriever;
 import com.spencer.recipeloader.retrieval.model.recipeml.Directions;
 import com.spencer.recipeloader.retrieval.model.recipeml.Ing;
 import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
@@ -33,6 +34,9 @@ public class ScraperServiceTests {
 
     @Mock
     JSouper jsouper;
+
+    @Mock
+    ImageRetriever imageRetriever;
 
     @Test
     public void shouldCreateIngArrayCorrectly() {
@@ -59,7 +63,7 @@ public class ScraperServiceTests {
 
         RecipeMapper recMapper = Mappers.getMapper(RecipeMapper.class);
 
-        ScraperServiceImpl scraperService = new ScraperServiceImpl(recMapper, jsouper);
+        ScraperServiceImpl scraperService = new ScraperServiceImpl(recMapper, jsouper, imageRetriever);
 
         File squareFile = new File("src\\test\\resources\\mockobjects\\allrecipes\\squarebracketrecipe.json");
 
@@ -75,7 +79,7 @@ public class ScraperServiceTests {
 
         RecipeMapper recMapper = Mappers.getMapper(RecipeMapper.class);
 
-        ScraperServiceImpl scraperService = new ScraperServiceImpl(recMapper, jsouper);
+        ScraperServiceImpl scraperService = new ScraperServiceImpl(recMapper, jsouper, imageRetriever);
 
         File squareFile = new File("src\\test\\resources\\mockobjects\\allrecipes\\recipe.json");
 
@@ -92,7 +96,7 @@ public class ScraperServiceTests {
 
         RecipeMapper mapper = Mappers.getMapper(RecipeMapper.class);
 
-        ScraperServiceImpl scraperService = new ScraperServiceImpl(mapper, jsouper);
+        ScraperServiceImpl scraperService = new ScraperServiceImpl(mapper, jsouper, imageRetriever);
 
         when(jsouper.getDoc(anyString())).thenReturn(doc);
        

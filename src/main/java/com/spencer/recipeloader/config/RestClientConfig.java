@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestClient;
 
 @Configuration
-public class WebClientConfig {
+public class RestClientConfig {
 
     @Value("${grocy.api-key}")
     private String API_KEY;

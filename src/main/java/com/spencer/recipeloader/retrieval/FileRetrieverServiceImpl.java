@@ -35,7 +35,7 @@ public class FileRetrieverServiceImpl implements RecipeRetrieverService<ImportRe
     @Override
     public RecipeDto retrieveRecipe(ImportRequest input) {
 
-        File file = new File(input.getURL());
+        File file = new File(input.getFilePath());
         
         ObjectMapper mapper = new ObjectMapper();
         XmlMapper xmlMapper = new XmlMapper();
