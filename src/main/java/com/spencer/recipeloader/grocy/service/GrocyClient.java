@@ -308,4 +308,59 @@ public class GrocyClient {
         return grocyResponse;
     }
 
+    @SuppressWarnings("null")
+    public GrocyPostResponse putFile(String entity, String fileName, byte[] bytes) {
+
+        String api = "api";
+        String files = "files";
+        GrocyPostResponse grocyResponse = new GrocyPostResponse();
+        List<String> errors = new ArrayList<>();;
+
+        URI buildUri = UriComponentsBuilder.fromUriString("http://localhost")
+                .port(grocyDockerPort)
+                .pathSegment(api, files, entity, fileName)
+                .build().encode().toUri();
+
+        log.debug("Sending request to {} with the body {}", buildUri, bytes);
+
+        //grocyWebClient.mutate().filter(GrocyClientExceptionHandler.errorHandlingFilter());
+
+        try {
+            grocyResponse = grocyWebClient.put()
+                    .uri(buildUri)
+                    .header(HttpHeaders.CONTENT_TYPE, "application/octet-stream")
+                    .body(bytes)
+                    .retrieve()
+                    //need to make an 'errorhandler' instead of response
+                            //response -> new Exception(response.toString()))// response.bodyToMono(String.class).map(Exception::new))
+                    // (response -> response.bodyToMono(String.class).flatMap(error ->
+                    // Mono.error(new Exception(error))
+                    // // //response -> doSomething(response))
+
+                    // .onStatus(httpStatus -> httpStatus.value() != 200,
+                    // error -> Mono.error(new Exception("Erorr fulfilling POST request")))
+                    .toEntity(GrocyPostResponse.class).getBody();
+        } catch (Exception e) {
+            if (StringUtils.contains(e.getMessage(),
+                    "Provided qu_id doesn't have a related conversion for that product")) {
+                log.error(e.getMessage());
+                errors.add(
+                        "We were unable to associate an ingredient to this recipe. To fix this issue, first create a conversion between the Grocy product's quantity and the recipe ingredient's quantity. Then re-run a POST call to create the recipe_pos with the URI" + buildUri + " and body " +
+                        bytes);
+            } else {
+                errors.add(e.getMessage());
+            }
+
+        }
+
+        if (!errors.isEmpty()) {    
+            String[] joinedMsg = {StringUtils.join(errors, "; ")};
+            String concatArr = StringUtils.join(joinedMsg, "; ");
+            throw new RestClientException(concatArr);
+        }
+
+        return grocyResponse;
+    }
+
+
 }

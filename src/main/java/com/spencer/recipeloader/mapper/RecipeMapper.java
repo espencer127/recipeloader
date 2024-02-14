@@ -16,7 +16,7 @@ public interface RecipeMapper {
 
     @Mapping(source = "head.title", target="name")
     @Mapping(source = "directions.step", target = "description")
-    @Mapping(expression = "java(recipeDto.getHead().getCategories().createCategories())", target="userFields.category")
+    @Mapping(expression = "java(recipeDto.getHead().getCategories().createCategories())", target="userfields.category")
     Recipe toRecipe(RecipeDto recipeDto);
 
     /** convert string to products post body

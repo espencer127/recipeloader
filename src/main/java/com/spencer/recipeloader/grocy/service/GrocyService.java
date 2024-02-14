@@ -1,15 +1,19 @@
 package com.spencer.recipeloader.grocy.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -28,16 +32,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GrocyService {
 
-    String recipeFilePath;
-    String recipesFolderPath;
-
     public FileRetrieverServiceImpl recipeMLService;
     public RecipeMapper recipeMapper;
     public GrocyClient grocyClient;
 
-    public GrocyService(@Value("${paths.recipe-file}") String recipeFilePath, @Value("${paths.recipes-folder}") String recipesFolderPath, FileRetrieverServiceImpl recipeMLService, RecipeMapper recipeMapper, GrocyClient grocyClient) {
-        this.recipeFilePath = recipeFilePath;
-        this.recipesFolderPath = recipesFolderPath;
+    public GrocyService(FileRetrieverServiceImpl recipeMLService, RecipeMapper recipeMapper, GrocyClient grocyClient) {
         this.recipeMLService = recipeMLService;
         this.recipeMapper = recipeMapper;
         this.grocyClient = grocyClient;
@@ -70,10 +69,12 @@ public class GrocyService {
 
         List<Product> updatedUserIngredients = grocyClient.getProducts();
 
-        //TODO: This recipe should include the categories but it doesn't
+        //TODO: upload picture here then add the file name to the recipe payload
+
         recipe = grocyClient.createRecipe(recipe);
 
-        List<RecipesPos> recipePosWeNeedToAdd = generateRecipePosList(recipeDto, recipe, updatedUserIngredients, updatedUserQuantityUnits);
+        List<RecipesPos> recipePosWeNeedToAdd = generateRecipePosList(recipeDto, recipe, updatedUserIngredients,
+                updatedUserQuantityUnits);
 
         log.debug("we're gonna add the recipePos objects: {}", recipePosWeNeedToAdd);
 
@@ -125,8 +126,8 @@ public class GrocyService {
 
         for (String ing : ingredientNamesWeNeedToAdd) {
             Optional<Ing> matchingIngMaybe = ingredientsInRecipe.stream()
-            .filter(x -> StringUtils.equalsIgnoreCase(x.getItem(), ing))
-            .findFirst();
+                    .filter(x -> StringUtils.equalsIgnoreCase(x.getItem(), ing))
+                    .findFirst();
 
             Ing matchingIng = matchingIngMaybe.get();
 
@@ -143,7 +144,8 @@ public class GrocyService {
                 // x.getName. If YES, then that's the 'matchingQuantityUnit'. If not, error log
                 // + continue with the next ingredient
                 Optional<QuantityUnit> unitToAddToProductMaybe2 = updatedUserQuantityUnits.stream()
-                        .filter(x -> StringUtils.equalsIgnoreCase(matchingIng.getAmt().getUnit(), madePlural(x.getName())))
+                        .filter(x -> StringUtils.equalsIgnoreCase(matchingIng.getAmt().getUnit(),
+                                madePlural(x.getName())))
                         .findFirst();
                 if (unitToAddToProductMaybe2.isPresent()) {
                     QuantityUnit unitToAddToProduct2 = new QuantityUnit();
@@ -192,15 +194,13 @@ public class GrocyService {
         List<QuantityUnit> updatedQuantityUnitsList = new ArrayList<>();
         addAllIfNotNull(updatedQuantityUnitsList, existingUserQuantityUnits);
         addAllIfNotNull(updatedQuantityUnitsList, addedQuantityUnits);
-        //updatedQuantityUnitsList.addAll(existingUserQuantityUnits);
-        //updatedQuantityUnitsList.addAll(addedQuantityUnits);
     }
 
     public static <E> void addAllIfNotNull(List<E> list, Collection<? extends E> c) {
-    if (c != null) {
-        list.addAll(c);
+        if (c != null) {
+            list.addAll(c);
+        }
     }
-}
 
     /**
      * For each ingredient in the recipe, make a "recipe_pos" record w/ the
@@ -224,32 +224,34 @@ public class GrocyService {
                     .findFirst().get();
 
             Optional<QuantityUnit> matchingQuantityUnitOpt = updatedQuantityUnits.stream()
-                    .filter(x -> (
-                        StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), x.getName()) ||
-                        StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), madePlural(x.getName()))
-                        )
-                    ).findFirst();
+                    .filter(x -> (StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), x.getName()) ||
+                            StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), madePlural(x.getName()))))
+                    .findFirst();
 
             QuantityUnit matchingQuantityUnit = new QuantityUnit();
 
             if (matchingQuantityUnitOpt.isPresent()) {
                 matchingQuantityUnit = matchingQuantityUnitOpt.get();
             } else {
-/*                 // check if there's a qty in "updatedQtyUnits" where the ing.amt.unit + s =
-                // x.getName. If YES, then that's the 'matchingQuantityUnit'. If not, error log
-                // + continue with the next ingredient
-                Optional<QuantityUnit> matchingQuantityUnitOpt2 = updatedQuantityUnits.stream()
-                        .filter(x -> 
-                        )
-                        .findFirst();
-                if (matchingQuantityUnitOpt2.isPresent()) {
-                    matchingQuantityUnit = matchingQuantityUnitOpt2.get();
-                } else { */
-                    log.error(
-                            "we in trouble...this ing doesn't have any quantity unit? Can't add it to the recipe {} for {}: {}",
-                            recipe.getId(), recipe.getName(), ing);
-                    continue;
-                //}
+                /*
+                 * // check if there's a qty in "updatedQtyUnits" where the ing.amt.unit + s =
+                 * // x.getName. If YES, then that's the 'matchingQuantityUnit'. If not, error
+                 * log
+                 * // + continue with the next ingredient
+                 * Optional<QuantityUnit> matchingQuantityUnitOpt2 =
+                 * updatedQuantityUnits.stream()
+                 * .filter(x ->
+                 * )
+                 * .findFirst();
+                 * if (matchingQuantityUnitOpt2.isPresent()) {
+                 * matchingQuantityUnit = matchingQuantityUnitOpt2.get();
+                 * } else {
+                 */
+                log.error(
+                        "we in trouble...this ing doesn't have any quantity unit? Can't add it to the recipe {} for {}: {}",
+                        recipe.getId(), recipe.getName(), ing);
+                continue;
+                // }
             }
 
             String neededIngQty = ing.getAmt().getQty();
@@ -262,7 +264,8 @@ public class GrocyService {
                         neededInt, matchingQuantityUnit.getId());
             } catch (NumberFormatException e) {
                 try {
-                    postBody = recipeMapper.toRecipePosPostBodyWithVariableAmount(matchingProduct.getId(), recipe.getId(),
+                    postBody = recipeMapper.toRecipePosPostBodyWithVariableAmount(matchingProduct.getId(),
+                            recipe.getId(),
                             parse(neededIngQty), neededIngQty, matchingQuantityUnit.getId());
                 } catch (Exception e1) {
                     // TODO Auto-generated catch block
@@ -276,19 +279,19 @@ public class GrocyService {
         return finalResult;
     }
 
-    //FIXME: need to be able to handle strings like 1 1/2
+    // FIXME: need to be able to handle strings like 1 1/2
     /**
      * Returns a whole number for the inputted ratio or decimal, rounded up.
      * 
      * @param ratio
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public Integer parse(String ratio) throws Exception {
         Integer returnValue = 0;
         Integer nominator = 0;
         Integer denominator = 0;
-        //if there's a space, split out the bit before it
+        // if there's a space, split out the bit before it
         Integer whole = 0;
 
         if (StringUtils.equals(ratio, "")) {
@@ -360,15 +363,15 @@ public class GrocyService {
         return dedupedList;
     }
 
-    //TODO: need to match on both qty and name
+    // TODO: need to match on both qty and name
     public List<String> findIngredientsWeNeedToAdd(RecipeDto recipeDto, List<Product> existingUserIngredients) {
 
         List<String> existingIngredients = new ArrayList<>();
-        
+
         if (existingUserIngredients != null) {
             existingIngredients = existingUserIngredients
-                .stream().map(x -> x.getName().trim().toLowerCase())
-                .collect(Collectors.toList());
+                    .stream().map(x -> x.getName().trim().toLowerCase())
+                    .collect(Collectors.toList());
         }
 
         List<Ing> neededIngredients = Arrays.asList(recipeDto.getIngredients().getIng());
@@ -388,6 +391,24 @@ public class GrocyService {
                 new HashSet<>(neededIngredientStrings));
 
         return dedupedList;
+    }
+
+    public void sendPicture(String fullPath, String fileName) {
+        File file = new File(fullPath);
+
+        //64encode the filename
+        String encodedFileName = Base64.getEncoder().encodeToString(fileName.getBytes());
+
+        try {
+            byte[] bytes = FileUtils.readFileToByteArray(file);
+            grocyClient.putFile("recipepictures", encodedFileName, bytes);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        //TODO: then how to associate picture to the recipe?
+        
     }
 
     /**

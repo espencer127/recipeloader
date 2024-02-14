@@ -1,12 +1,20 @@
 package com.spencer.recipeloader.retrieval;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.controller.ScrapeRequest;
@@ -19,8 +27,12 @@ import com.spencer.recipeloader.retrieval.model.scraper.AllRecipesRecipe;
 
 import lombok.extern.slf4j.Slf4j;
 
+@ExtendWith(MockitoExtension.class)
 @Slf4j
 public class ScraperServiceTests {
+
+    @Mock
+    JSouper jsouper;
 
     @Test
     public void shouldCreateIngArrayCorrectly() {
@@ -47,7 +59,7 @@ public class ScraperServiceTests {
 
         RecipeMapper recMapper = Mappers.getMapper(RecipeMapper.class);
 
-        ScraperServiceImpl scraperService = new ScraperServiceImpl(recMapper);
+        ScraperServiceImpl scraperService = new ScraperServiceImpl(recMapper, jsouper);
 
         File squareFile = new File("src\\test\\resources\\mockobjects\\allrecipes\\squarebracketrecipe.json");
 
@@ -55,7 +67,6 @@ public class ScraperServiceTests {
         //String cleansedRecipe = scraperService.cleanseRecipe(squareRecipe);
         //mapper.readValue(cleansedRecipe, AllRecipesRecipe.class);
     }
-
     
     @Disabled("gotta fix after refactor; cleanse recipe method private now")
     @Test
@@ -64,7 +75,7 @@ public class ScraperServiceTests {
 
         RecipeMapper recMapper = Mappers.getMapper(RecipeMapper.class);
 
-        ScraperServiceImpl scraperService = new ScraperServiceImpl(recMapper);
+        ScraperServiceImpl scraperService = new ScraperServiceImpl(recMapper, jsouper);
 
         File squareFile = new File("src\\test\\resources\\mockobjects\\allrecipes\\recipe.json");
 
@@ -73,20 +84,24 @@ public class ScraperServiceTests {
         //mapper.readValue(cleansedRecipe, AllRecipesRecipe.class);
     }
 
-    
     @Test
-    public void whenCallUrl_shouldMakeObject() {
+    public void whenCallUrl_shouldMakeObject() throws IOException {
+
+        File inputt = new File("src\\test\\resources\\mockwebpages\\AllRecipesPorkChopsRecipe.html");
+        Document doc = Jsoup.parse(inputt, "UTF-8", "http://example.com/");
 
         RecipeMapper mapper = Mappers.getMapper(RecipeMapper.class);
 
-        ScraperServiceImpl scraperService = new ScraperServiceImpl(mapper);
+        ScraperServiceImpl scraperService = new ScraperServiceImpl(mapper, jsouper);
 
+        when(jsouper.getDoc(anyString())).thenReturn(doc);
+       
         ScrapeRequest input = new ScrapeRequest();
-        input.setURL("https://www.allrecipes.com/recipe/235158/worlds-best-honey-garlic-pork-chops/");
+        input.setURL("chuggachugga");
 
         RecipeDto result = scraperService.retrieveRecipe(input);
-        //scraperService.scrapeHungryRoot("https://www.hungryroot.com/products/braised-lemongrass-tofu-nuggets-202/");
 
+        log.debug("We got the result {}", result);
         //TODO: should test stuff about the result
     }
 

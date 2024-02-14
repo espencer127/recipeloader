@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.controller.ScrapeRequest;
@@ -22,9 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 public class ScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest> {
 
     RecipeMapper recipeMapper;
+    JSouper jsouper;
 
-    public ScraperServiceImpl(RecipeMapper recipeMapper) {
+    public ScraperServiceImpl(RecipeMapper recipeMapper, JSouper jsouper) {
         this.recipeMapper = recipeMapper;
+        this.jsouper = jsouper;
     }
 
     @Override
@@ -32,14 +35,18 @@ public class ScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest>
 
         String url = input.getURL();
         
-        Document doc;
         ObjectMapper mapper = new ObjectMapper();
+        Document doc;
 
         try {
-            doc = Jsoup.connect(url).get();
+            doc = jsouper.getDoc(url);
             
             //Elements scriptElements = doc.getElementsByTag("script");
             Element jsonScript = doc.getElementsByAttributeValue("type", "application/ld+json").first();
+            
+            Element imgEl = doc.select("img").first();
+            
+            String imgSrc = imgEl.attr("data-src");
             String data = cleanseRecipe(jsonScript.data());
             
             
@@ -56,11 +63,10 @@ public class ScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest>
             return result;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RestClientException(e.getMessage());
         }
 
-        return null;
-    }
+    } 
 
     private String cleanseRecipe(String data) {
         if (data.startsWith("[")) {
