@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
 import com.spencer.recipeloader.retrieval.ScraperServiceImpl;
@@ -82,7 +81,8 @@ public class UIController {
     @RequestMapping(value="/ui/insertRecipe", method = RequestMethod.POST)
     public String insertRecipe(@ModelAttribute("recipeDto") RecipeDto scrape, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        grocyService.sendInfoToGrocy(scrape);
+        //TODO.....get the image to this spot
+        //grocyService.sendInfoToGrocy(scrape);
         
         model.addAttribute("recipeDto", mapper.writeValueAsString(scrape));
 

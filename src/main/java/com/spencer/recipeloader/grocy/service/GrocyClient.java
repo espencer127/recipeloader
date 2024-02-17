@@ -33,14 +33,17 @@ import lombok.extern.slf4j.Slf4j;
 public class GrocyClient {
 
     private final RestClient grocyWebClient;
+    private final RestClient putClient;
     private Integer grocyDockerPort;
     private RecipeMapper recipeMapper;
     private ObjectMapper mapper;
 
     public GrocyClient(RestClient grocyWebClient,
+            RestClient putClient,
             @Value("${grocy.docker.port}") Integer grocyDockerPort,
             RecipeMapper recipeMapper, ObjectMapper mapper) {
         this.grocyWebClient = grocyWebClient;
+        this.putClient = putClient;
         this.grocyDockerPort = grocyDockerPort;
         this.recipeMapper = recipeMapper;
         this.mapper = mapper;
@@ -290,26 +293,45 @@ public class GrocyClient {
             if (StringUtils.contains(e.getMessage(),
                     "Provided qu_id doesn't have a related conversion for that product")) {
                 log.error(e.getMessage());
-                errors.add(
-                        "We were unable to associate an ingredient to this recipe. To fix this issue, first create a conversion between the Grocy product's quantity and the recipe ingredient's quantity. Then re-run a POST call to create the recipe_pos with the URI" + buildUri + " and body " +
+                log.error(
+                        "We were unable to associate an ingredient to this recipe. To fix this issue, first create a conversion between the Grocy product's quantity and the recipe ingredient's quantity. Then re-run a POST call to create the recipe_pos with the URI: " + buildUri + " and body: " +
                         body);
             } else {
-                errors.add(e.getMessage());
+                log.error(e.getMessage());
             }
 
-        }
-
-        if (!errors.isEmpty()) {    
-            String[] joinedMsg = {StringUtils.join(errors, "; ")};
-            String concatArr = StringUtils.join(joinedMsg, "; ");
-            throw new RestClientException(concatArr);
         }
 
         return grocyResponse;
     }
 
     @SuppressWarnings("null")
-    public GrocyPostResponse putFile(String entity, String fileName, byte[] bytes) {
+    public void putObject(String entity, Integer objectId, String body) {
+
+        String api = "api";
+        String objects = "objects";
+
+        URI buildUri = UriComponentsBuilder.fromUriString("http://localhost")
+                .port(grocyDockerPort)
+                .pathSegment(api, objects, entity, String.valueOf(objectId))
+                .build().encode().toUri();
+
+        log.debug("Sending request to {} with the body {}", buildUri, body);
+
+        try {
+            grocyWebClient.put()
+                    .uri(buildUri)
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .body(body)
+                    .retrieve();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+    }
+
+    @SuppressWarnings("null")
+    public void putFile(String entity, String fileName, byte[] bytes) {
 
         String api = "api";
         String files = "files";
@@ -326,7 +348,7 @@ public class GrocyClient {
         //grocyWebClient.mutate().filter(GrocyClientExceptionHandler.errorHandlingFilter());
 
         try {
-            grocyResponse = grocyWebClient.put()
+            putClient.put()
                     .uri(buildUri)
                     .header(HttpHeaders.CONTENT_TYPE, "application/octet-stream")
                     .body(bytes)
@@ -339,8 +361,10 @@ public class GrocyClient {
 
                     // .onStatus(httpStatus -> httpStatus.value() != 200,
                     // error -> Mono.error(new Exception("Erorr fulfilling POST request")))
-                    .toEntity(GrocyPostResponse.class).getBody();
+                    //.toEntity(GrocyPostResponse.class).getBody()
+                    ;
         } catch (Exception e) {
+            log.error(e.getMessage());
             if (StringUtils.contains(e.getMessage(),
                     "Provided qu_id doesn't have a related conversion for that product")) {
                 log.error(e.getMessage());
@@ -348,6 +372,7 @@ public class GrocyClient {
                         "We were unable to associate an ingredient to this recipe. To fix this issue, first create a conversion between the Grocy product's quantity and the recipe ingredient's quantity. Then re-run a POST call to create the recipe_pos with the URI" + buildUri + " and body " +
                         bytes);
             } else {
+                log.error(e.getMessage());
                 errors.add(e.getMessage());
             }
 
@@ -359,7 +384,6 @@ public class GrocyClient {
             throw new RestClientException(concatArr);
         }
 
-        return grocyResponse;
     }
 
 

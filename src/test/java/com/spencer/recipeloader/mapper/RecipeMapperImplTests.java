@@ -28,7 +28,7 @@ public class RecipeMapperImplTests {
             e.printStackTrace();
         }
 
-        Recipe mapperResult = recipeMapper.toRecipe(recipeDto);
+        Recipe mapperResult = recipeMapper.toRecipe(recipeDto, "dummy");
         
         assertEquals("Cookies,And,Bars", mapperResult.getUserfields().getCategory());
     }

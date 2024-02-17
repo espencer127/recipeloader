@@ -20,6 +20,7 @@ import com.spencer.recipeloader.grocy.service.GrocyClient;
 import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.mapper.RecipeMapper;
 import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.retrieval.image.ImageRetriever;
 import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 
 public class GrocyServiceTests {
@@ -31,6 +32,8 @@ public class GrocyServiceTests {
     @Mock
     public GrocyClient grocyClient;
 
+    public ImageRetriever imgRetriever;
+
     /**
      * Right now the 'generateRecipePosList' makes double associations per product. Let's troubleshoot that.
      */
@@ -41,7 +44,7 @@ public class GrocyServiceTests {
 
         RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
 
-        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient);
+        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient, imgRetriever);
         
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -75,7 +78,7 @@ public class GrocyServiceTests {
 
         RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
 
-        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient);
+        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient, imgRetriever);
         
         Integer response = grocyService.parse(fractionQty);
 

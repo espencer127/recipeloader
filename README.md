@@ -2,13 +2,19 @@
 
 This app shoves RecipeML recipes into a docker-run grocy app.
 
+## Current Features
+
+- Thymeleaf UI interface for users to scrape from a website, cleanse the response object, and then send it to Grocy
+- API interfaces for the same capabilities
+- Scraping process to save images to local 'Downloads' folder, upload image to grocy and associates it to the recipe
+
 ## In Progress
 
-- improve end-user experience; support command line app
+- Scraping process captures categories and attaches them to the recipes saved in grocy
 
 ## Future Enhancements
 
-- support adding RecipeML categories to the recipes saved in grocy
+- resolve issues with product qty's and qty conversion when uploading to grocy
 - if the category userval doesn't exist in grocy first, make it
 - api/UI to do same 'scrape functionality' but for local files
 - Import recipes from websites (besides allrecipes)
@@ -16,9 +22,7 @@ This app shoves RecipeML recipes into a docker-run grocy app.
 - UI interface for importing files
 - When importing from AllRecipes, map the prep/cook/total time to user fields
 - Support for \<ing-div\> tag in ingredients block
-- scrape images from websites
 - the 'ScrapedRecipe' page should show you the image in a box, and optionally provide you a way to edit the image path
-- add images to recipes in grocy
 - refactor the process for importing multiple recipes (ie whittle down to unique ingredients in all the recipes), not just one recipe at a time
 
 ## Sundry Stuff

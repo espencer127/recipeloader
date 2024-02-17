@@ -7,5 +7,4 @@ public class RecipeDto {
     private Head head;
     private Ingredients ingredients;
     private Directions directions;
-    private ImageInfo imgInfo;
 }

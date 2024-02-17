@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class Head {
     private String title;
-    private Categories categories;
+    //private Categories categories;
     private String yield;
+    private Time time;
 }

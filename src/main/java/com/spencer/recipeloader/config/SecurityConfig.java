@@ -15,7 +15,7 @@ public class SecurityConfig {
     public SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(exchanges -> exchanges
-                .requestMatchers("/*").permitAll()
+                .requestMatchers("/*", "/**", "/*/**").permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(customizer -> customizer.disable());

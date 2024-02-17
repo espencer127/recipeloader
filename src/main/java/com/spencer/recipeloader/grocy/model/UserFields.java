@@ -11,4 +11,9 @@ import lombok.Data;
 @JsonInclude(Include.NON_NULL)
 public class UserFields {
     private String category;
+    private String cooktime;
+    private String diet;
+    private String numingredients;
+    private String preptime;
+    private String totaltime;
 }

@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.controller.ScrapeRequest;
 import com.spencer.recipeloader.mapper.RecipeMapper;
 import com.spencer.recipeloader.retrieval.image.ImageRetriever;
-import com.spencer.recipeloader.retrieval.model.recipeml.ImageInfo;
 import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 import com.spencer.recipeloader.retrieval.model.scraper.AllRecipesRecipe;
 
@@ -49,9 +48,7 @@ public class ScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest>
 
             AllRecipesRecipe recipe = mapper.readValue(cleanseRecipe(jsonScript.data()), AllRecipesRecipe.class);
 
-            ImageInfo imgInfo = downloadImage(doc);
-
-            RecipeDto result = recipeMapper.toRecipeDto(recipe, imgInfo);
+            RecipeDto result = recipeMapper.toRecipeDto(recipe);
 
             return result;
 
@@ -59,14 +56,6 @@ public class ScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest>
             throw new RestClientException(e.getMessage());
         }
     } 
-
-    private ImageInfo downloadImage(Document doc) {
-        String imgSrc = doc.select("img").first().attr("data-src");
-
-        ImageInfo imgInfo = imageRetriever.downloadImage(imgSrc);
-        
-        return imgInfo;
-    }
 
     private String cleanseRecipe(String data) {
         if (data.startsWith("[")) {

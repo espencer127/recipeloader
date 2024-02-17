@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -16,14 +15,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spencer.recipeloader.controller.FullResponse;
+import com.spencer.recipeloader.controller.InsertImageRequest;
 import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.mapper.RecipeMapper;
 import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.retrieval.image.ImageRetriever;
 import com.spencer.recipeloader.retrieval.model.recipeml.Ing;
 import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
+import com.spencer.recipeloader.retrieval.model.scraper.ImageInfo;
+import com.spencer.recipeloader.utils.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,11 +40,13 @@ public class GrocyService {
     public FileRetrieverServiceImpl recipeMLService;
     public RecipeMapper recipeMapper;
     public GrocyClient grocyClient;
+    public ImageRetriever imageRetriever;
 
-    public GrocyService(FileRetrieverServiceImpl recipeMLService, RecipeMapper recipeMapper, GrocyClient grocyClient) {
+    public GrocyService(FileRetrieverServiceImpl recipeMLService, RecipeMapper recipeMapper, GrocyClient grocyClient, ImageRetriever imageRetriever) {
         this.recipeMLService = recipeMLService;
         this.recipeMapper = recipeMapper;
         this.grocyClient = grocyClient;
+        this.imageRetriever = imageRetriever;
     }
 
     /**
@@ -54,9 +62,19 @@ public class GrocyService {
      * <li>(add that ingredient to the internal ingredient list object)</li>
      * <li>API: POST make the recipe ("recipe")</li>
      * <li>API: POST add each ingredient to the recipe ("recipe_pos")</li>
+     * @return 
      */
-    public void sendInfoToGrocy(RecipeDto recipeDto) {
-        Recipe recipe = recipeMapper.toRecipe(recipeDto);
+    public Integer sendInfoToGrocy(FullResponse recipeAndImage) {
+
+        ImageInfo imgInfo = recipeAndImage.getImage();
+
+        if (!StringUtils.isEmpty(imgInfo.getUrl())) {
+            createPicture(imgInfo);
+        }
+
+        RecipeDto recipeDto = recipeAndImage.getRecipe();
+
+        Recipe recipe = recipeMapper.toRecipe(recipeDto, imgInfo.getFileName());
 
         log.debug("got the recipe {}", recipe);
 
@@ -76,6 +94,10 @@ public class GrocyService {
         log.debug("we're gonna add the recipePos objects: {}", recipePosWeNeedToAdd);
 
         grocyClient.createRecipePos(recipePosWeNeedToAdd);
+
+        //TODO: Not sure why inserting recipes w/ catgories in the desc doesn't work?
+
+        return recipe.getId();
     }
 
     /**
@@ -142,7 +164,7 @@ public class GrocyService {
                 // + continue with the next ingredient
                 Optional<QuantityUnit> unitToAddToProductMaybe2 = updatedUserQuantityUnits.stream()
                         .filter(x -> StringUtils.equalsIgnoreCase(matchingIng.getAmt().getUnit(),
-                                madePlural(x.getName())))
+                        Utils.madePlural(x.getName())))
                         .findFirst();
                 if (unitToAddToProductMaybe2.isPresent()) {
                     QuantityUnit unitToAddToProduct2 = new QuantityUnit();
@@ -216,13 +238,15 @@ public class GrocyService {
         List<Ing> neededIngredients = Arrays.asList(recipeDto.getIngredients().getIng());
 
         for (Ing ing : neededIngredients) {
-            Product matchingProduct = updatedProductsList.stream()
+            Optional<Product> matchingProductOpt = updatedProductsList.stream()
                     .filter(x -> StringUtils.equalsIgnoreCase(ing.getItem().trim(), x.getName()))
-                    .findFirst().get();
+                    .findFirst();
+
+            //TODO keep going here 2/14. Why can't get we get a 'matching product' here?
 
             Optional<QuantityUnit> matchingQuantityUnitOpt = updatedQuantityUnits.stream()
                     .filter(x -> (StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), x.getName()) ||
-                            StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), madePlural(x.getName()))))
+                            StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), Utils.madePlural(x.getName()))))
                     .findFirst();
 
             QuantityUnit matchingQuantityUnit = new QuantityUnit();
@@ -230,47 +254,59 @@ public class GrocyService {
             if (matchingQuantityUnitOpt.isPresent()) {
                 matchingQuantityUnit = matchingQuantityUnitOpt.get();
             } else {
-                /*
-                 * // check if there's a qty in "updatedQtyUnits" where the ing.amt.unit + s =
-                 * // x.getName. If YES, then that's the 'matchingQuantityUnit'. If not, error
-                 * log
-                 * // + continue with the next ingredient
-                 * Optional<QuantityUnit> matchingQuantityUnitOpt2 =
-                 * updatedQuantityUnits.stream()
-                 * .filter(x ->
-                 * )
-                 * .findFirst();
-                 * if (matchingQuantityUnitOpt2.isPresent()) {
-                 * matchingQuantityUnit = matchingQuantityUnitOpt2.get();
-                 * } else {
-                 */
-                log.error(
-                        "we in trouble...this ing doesn't have any quantity unit? Can't add it to the recipe {} for {}: {}",
-                        recipe.getId(), recipe.getName(), ing);
-                continue;
-                // }
+                
+                  // check if there's a qty in "updatedQtyUnits" where the ing.amt.unit + s =
+                  // x.getName. If YES, then that's the 'matchingQuantityUnit'. If not, error
+                  //log
+                  // + continue with the next ingredient
+                  /* Optional<QuantityUnit> matchingQuantityUnitOpt2 =
+                  updatedQuantityUnits.stream()
+                  .filter(x ->
+                  )
+                  .findFirst();
+                  if (matchingQuantityUnitOpt2.isPresent()) {
+                  matchingQuantityUnit = matchingQuantityUnitOpt2.get();
+                  } else { */
+
+                Optional<QuantityUnit> matchingQuantityUnitOpt2 = updatedQuantityUnits.stream()
+                    .filter(x -> StringUtils.equalsIgnoreCase(ing.getAmt().getUnit(), Utils.madePlural(x.getName())))
+                    .findFirst();
+
+                if (matchingQuantityUnitOpt2.isPresent()) {
+                    matchingQuantityUnit = matchingQuantityUnitOpt2.get();
+                } else {
+                    log.error(
+                            "we in trouble...this ing doesn't have any quantity unit? Can't add it to the recipe {} for {}: {}",
+                            recipe.getId(), recipe.getName(), ing);
+                    continue;
+                }
             }
 
             String neededIngQty = ing.getAmt().getQty();
 
             RecipesPos postBody = new RecipesPos();
 
-            try {
-                Integer neededInt = Integer.valueOf(neededIngQty);
-                postBody = recipeMapper.toRecipePosPostBodyWithAmount(matchingProduct.getId(), recipe.getId(),
-                        neededInt, matchingQuantityUnit.getId());
-            } catch (NumberFormatException e) {
+            if (matchingProductOpt.isPresent()) {
+                Product matchingProduct = matchingProductOpt.get();
                 try {
-                    postBody = recipeMapper.toRecipePosPostBodyWithVariableAmount(matchingProduct.getId(),
-                            recipe.getId(),
-                            parse(neededIngQty), neededIngQty, matchingQuantityUnit.getId());
-                } catch (Exception e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                    Integer neededInt = Integer.valueOf(neededIngQty);
+                    postBody = recipeMapper.toRecipePosPostBodyWithAmount(matchingProduct.getId(), recipe.getId(),
+                            neededInt, matchingQuantityUnit.getId());
+                } catch (NumberFormatException e) {
+                    try {
+                        postBody = recipeMapper.toRecipePosPostBodyWithVariableAmount(matchingProduct.getId(),
+                                recipe.getId(),
+                                parse(neededIngQty), neededIngQty, matchingQuantityUnit.getId());
+                    } catch (Exception e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
-            }
 
-            finalResult.add(postBody);
+                finalResult.add(postBody);
+            } else {
+                log.error("Couldn't find the product to make the association for the Recipe POS with quantity", matchingQuantityUnit.getName());
+            }
         }
 
         return finalResult;
@@ -347,7 +383,7 @@ public class GrocyService {
 
         neededQuantityUnits.removeIf(StringUtils::isEmpty);
 
-        removePlurals(neededQuantityUnits);
+        Utils.removePlurals(neededQuantityUnits);
 
         neededQuantityUnits.removeAll(existingUnits);
 
@@ -382,7 +418,7 @@ public class GrocyService {
         // TODO: need to be smarter here...if there's an existing "almonds" and the
         // recipe calls for "almond", we shouldn't try to add "almond" to the db
 
-        removePlurals(neededIngredientStrings);
+        Utils.removePlurals(neededIngredientStrings);
 
         List<String> dedupedList = new ArrayList<>(
                 new HashSet<>(neededIngredientStrings));
@@ -390,45 +426,49 @@ public class GrocyService {
         return dedupedList;
     }
 
-    public void sendPicture(String fullPath, String fileName) {
-        File file = new File(fullPath);
 
-        //64encode the filename
-        String encodedFileName = Base64.getEncoder().encodeToString(fileName.getBytes());
-
+    public void downloadThenUploadThenAssociate(InsertImageRequest imgRequest) {
+        ObjectMapper mapper = new ObjectMapper();
+        ImageInfo imgResult = imageRetriever.downloadImage(imgRequest.getImageUrl());
+        //UPLOAD
+        createPicture(imgResult);
+        //make a recipe with just the one object
+        Recipe rec = new Recipe();
+        rec.setPicture_file_name(imgResult.getFileName());
         try {
-            byte[] bytes = FileUtils.readFileToByteArray(file);
-            grocyClient.putFile("recipepictures", encodedFileName, bytes);
-        } catch (IOException e) {
+            grocyClient.putObject("recipes", imgRequest.getRecipeId(), mapper.writeValueAsString(rec));
+        } catch (JsonProcessingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        //TODO: then how to associate picture to the recipe?
+    }
+
+    public void createPicture(ImageInfo imageInfo) {    
+        File file = new File(imageInfo.getLocalPath());
+
+        try {
+            byte[] bytes = FileUtils.readFileToByteArray(file);
+            grocyClient.putFile("recipepictures", imageInfo.getFileName(), bytes);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
+    }
+    
+    public void updateGrocyObject(String updateReq, String entity, Integer objectId) {
+
+        ObjectMapper mapper = new ObjectMapper();
         
+        if (StringUtils.equalsIgnoreCase(entity, "recipes")) {
+            try {
+                Recipe rec = mapper.readValue(updateReq, Recipe.class);
+                grocyClient.putObject(entity, objectId, mapper.writeValueAsString(rec));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    /**
-     * For example, if a list contains both "teaspoon" and "teaspoons", it'll remove
-     * the "teaspoons"
-     * 
-     * @param neededItems
-     */
-    private void removePlurals(List<String> neededItems) {
-        neededItems.removeIf(x -> neededItems.stream().anyMatch(y -> StringUtils.equals(y, StringUtils.chop(x))));
-
-        neededItems.removeIf(x -> neededItems.stream().anyMatch(y -> StringUtils.equals(x, StringUtils.chop(y))));
-    }
-
-    /**
-     * Adds an 's' to the end of a word.
-     * 
-     * @param word
-     * @return word + s
-     */
-    private String madePlural(String word) {
-        String pluralWord = word + "s";
-        return pluralWord;
-    }
 
 }
