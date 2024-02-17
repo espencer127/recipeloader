@@ -11,20 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @Slf4j
-public class RecipeLoaderApplication implements CommandLineRunner {
+public class RecipeLoaderApplication {
 
 	@Autowired
 	GrocyService grocyService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(RecipeLoaderApplication.class, args);
-	}
-	
-	@Override
-	public void run(String... args) throws Exception {
-		System.out.println("hi :)");
-
-		grocyService.execute();
 	}
 
 }

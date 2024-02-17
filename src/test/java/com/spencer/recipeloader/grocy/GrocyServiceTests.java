@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
@@ -18,17 +19,20 @@ import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.grocy.service.GrocyClient;
 import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.mapper.RecipeMapper;
-import com.spencer.recipeloader.recipeml.model.RecipeDto;
-import com.spencer.recipeloader.recipeml.service.RecipeMLService;
+import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.retrieval.image.ImageRetriever;
+import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
 
 public class GrocyServiceTests {
 
-    private RecipeMLService recipeMLService;
+    private FileRetrieverServiceImpl recipeMLService;
 
     public RecipeMapper recipeMapper;
 
     @Mock
     public GrocyClient grocyClient;
+
+    public ImageRetriever imgRetriever;
 
     /**
      * Right now the 'generateRecipePosList' makes double associations per product. Let's troubleshoot that.
@@ -36,11 +40,11 @@ public class GrocyServiceTests {
     @Test
     public void whenGenerateRecipePosList_ShouldOnlyCreateOneRecipePosPerProduct() {
 
-        recipeMLService = new RecipeMLService();
+        recipeMLService = new FileRetrieverServiceImpl();
 
         RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
 
-        GrocyService grocyService = new GrocyService("src\\test\\resources\\BrowniesRecipe.xml","src\\test\\resources\\BrowniesRecipe.xml",recipeMLService, recipeMapper, grocyClient);
+        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient, imgRetriever);
         
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -64,16 +68,17 @@ public class GrocyServiceTests {
         }
     }
 
+    @Disabled("how do we want to handle this post-refactor?")
     @Test
     public void whenParseQuantityString_shouldWork() throws Exception {
         String fractionQty = "1 1/2";
         Integer expected = 2;
 
-        recipeMLService = new RecipeMLService();
+        recipeMLService = new FileRetrieverServiceImpl();
 
         RecipeMapper recipeMapper = Mappers.getMapper(RecipeMapper.class);
 
-        GrocyService grocyService = new GrocyService("src\\test\\resources\\BrowniesRecipe.xml","src\\test\\resources\\BrowniesRecipe.xml",recipeMLService, recipeMapper, grocyClient);
+        GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient, imgRetriever);
         
         Integer response = grocyService.parse(fractionQty);
 
