@@ -1,0 +1,55 @@
+{
+    "author": "John Chandler",
+    "canonical_url": "https://www.allrecipes.com/recipe/235158/worlds-best-honey-garlic-pork-chops/",
+    "category": "Entree,Dinner",
+    "cook_time": 20,
+    "cuisine": "American",
+    "description": "These glazed honey garlic pork chops are quick and simple to cook on the grill in less than 30 minutes for a mouth-watering meal.",
+    "host": "allrecipes.com",
+    "image": "https://www.allrecipes.com/thmb/xijdHGCdDvaDbX0cZioCuboPPX4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/235158-worlds-best-honey-garlic-pork-chops-DDMFS-4x3-6d16c2884cdd407eb8e1e2f494791542.jpg",
+    "ingredient_groups": [
+        {
+            "ingredients": [
+                "1/2 cup ketchup",
+                "2 2/3 tablespoons honey",
+                "2 tablespoons low-sodium soy sauce",
+                "2 cloves garlic, crushed",
+                "6 (4 ounce) (1-inch thick) pork chops"
+            ],
+            "purpose": "None"
+        }
+    ],
+    "ingredients": [
+        "1/2 cup ketchup",
+        "2 2/3 tablespoons honey",
+        "2 tablespoons low-sodium soy sauce",
+        "2 cloves garlic, crushed",
+        "6 (4 ounce) (1-inch thick) pork chops"
+    ],
+    "instructions": "Preheat grill for medium heat and lightly oil the grate. Gather ingredients.\nWhisk ketchup, honey, soy sauce, and garlic together in a bowl to make a glaze.\nSear the pork chops on both sides on the preheated grill. Lightly brush glaze onto each side of the chops as they cook; grill until no longer pink in the center, about 7 to 9 minutes per side. An instant-read thermometer inserted into the center should read 145 degrees F (63 degrees C).\nServe hot and enjoy!",
+    "instructions_list": [
+        "Preheat grill for medium heat and lightly oil the grate. Gather ingredients.",
+        "Whisk ketchup, honey, soy sauce, and garlic together in a bowl to make a glaze.",
+        "Sear the pork chops on both sides on the preheated grill. Lightly brush glaze onto each side of the chops as they cook; grill until no longer pink in the center, about 7 to 9 minutes per side. An instant-read thermometer inserted into the center should read 145 degrees F (63 degrees C).",
+        "Serve hot and enjoy!"
+    ],
+    "language": "en",
+    "nutrients": {
+        "calories": "290 kcal",
+        "carbohydrateContent": "14 g",
+        "cholesterolContent": "95 mg",
+        "fiberContent": "0 g",
+        "proteinContent": "30 g",
+        "saturatedFatContent": "4 g",
+        "sodiumContent": "419 mg",
+        "sugarContent": "12 g",
+        "fatContent": "13 g",
+        "unsaturatedFatContent": "0 g"
+    },
+    "prep_time": 10,
+    "ratings": 4.5,
+    "site_name": "Allrecipes",
+    "title": "Worlds Best Honey Garlic Pork Chops",
+    "total_time": 30,
+    "yields": "6 servings"
+}
