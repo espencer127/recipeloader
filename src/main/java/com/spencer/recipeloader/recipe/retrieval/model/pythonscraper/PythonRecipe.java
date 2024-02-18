@@ -1,9 +1,9 @@
-package com.spencer.recipeloader.retrieval.model.scraper;
+package com.spencer.recipeloader.recipe.retrieval.model.pythonscraper;
 
 import lombok.Data;
 
 @Data
-public class Recipe {
+public class PythonRecipe {
     private String author;
     private String canonical_url;
     private String category;
@@ -26,13 +26,13 @@ public class Recipe {
     private String yields;
 
     @Data
-    public class IngredientGroup {
+    public static class IngredientGroup {
         private String[] ingredients;
         private String purpose;
     }
 
     @Data
-    public class NutritionInfo {
+    public static class NutritionInfo {
         private String calories;
         private String carbohydrateContent;
         private String cholesterolContent;

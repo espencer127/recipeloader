@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.retrieval.model.recipeml;
+package com.spencer.recipeloader.recipe.retrieval.model.recipeml;
 
 import org.apache.commons.lang3.StringUtils;
 

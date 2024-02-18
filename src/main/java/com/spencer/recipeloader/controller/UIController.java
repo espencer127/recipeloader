@@ -10,20 +10,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spencer.recipeloader.grocy.service.GrocyService;
-import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
-import com.spencer.recipeloader.retrieval.ScraperServiceImpl;
-import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
+import com.spencer.recipeloader.recipe.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.recipe.retrieval.PythonScraperServiceImpl;
+import com.spencer.recipeloader.universal.model.FullResponse;
+import com.spencer.recipeloader.universal.model.RecipeInfo;
 
 
 @Controller
 public class UIController {
 
     ApiController apiController;
-    ScraperServiceImpl scraperService;
+    PythonScraperServiceImpl scraperService;
     FileRetrieverServiceImpl fileRetrieverService;
     GrocyService grocyService;
 
-    public UIController(ApiController apiController, ScraperServiceImpl scraperService, FileRetrieverServiceImpl fileRetrieverService, GrocyService grocyService) {
+    public UIController(ApiController apiController, PythonScraperServiceImpl scraperService, FileRetrieverServiceImpl fileRetrieverService, GrocyService grocyService) {
         this.apiController = apiController;
         this.scraperService = scraperService;
         this.fileRetrieverService = fileRetrieverService;
@@ -46,8 +47,8 @@ public class UIController {
         String exampleUrl = "https://www.allrecipes.com/recipe/235158/worlds-best-honey-garlic-pork-chops/";
         ScrapeRequest req = new ScrapeRequest();
         req.setURL(exampleUrl);
-        RecipeDto result = scraperService.retrieveRecipe(req);
-        model.addAttribute("recipeDto", mapper.writeValueAsString(result));
+        FullResponse result = scraperService.retrieveRecipe(req.getURL());
+        model.addAttribute("recipeDto", mapper.writeValueAsString(result.getRecipe()));
         model.addAttribute("url", exampleUrl);
         return "ScrapeExample";
     }
@@ -63,8 +64,8 @@ public class UIController {
     public String showRequest(@ModelAttribute("scrapeRequest") ScrapeRequest request, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String url = request.getURL();
-        RecipeDto result = scraperService.retrieveRecipe(request);
-        model.addAttribute("recipeDto", mapper.writeValueAsString(result));
+        FullResponse result = scraperService.retrieveRecipe(request.getURL());
+        model.addAttribute("recipeDto", mapper.writeValueAsString(result.getRecipe()));
         model.addAttribute("url", url);
 
         return "ScrapedRecipe";
@@ -79,7 +80,7 @@ public class UIController {
      * @throws JsonProcessingException
      */
     @RequestMapping(value="/ui/insertRecipe", method = RequestMethod.POST)
-    public String insertRecipe(@ModelAttribute("recipeDto") RecipeDto scrape, Model model) throws JsonProcessingException {
+    public String insertRecipe(@ModelAttribute("recipeDto") RecipeInfo scrape, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         //TODO.....get the image to this spot
         //grocyService.sendInfoToGrocy(scrape);
@@ -100,8 +101,8 @@ public class UIController {
     public String showParsedImportObject(@ModelAttribute("scrapeRequest") ImportRequest request, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String url = request.getFilePath();
-        RecipeDto result = fileRetrieverService.retrieveRecipe(request);
-        model.addAttribute("recipeDto", mapper.writeValueAsString(result));
+        FullResponse result = fileRetrieverService.retrieveRecipe(request);
+        model.addAttribute("recipeDto", mapper.writeValueAsString(result.getRecipe()));
         model.addAttribute("url", url);
 
         return "ScrapedRecipe";

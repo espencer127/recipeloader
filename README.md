@@ -13,6 +13,7 @@ This app shoves RecipeML recipes into a docker-run grocy app.
 - Scraping process captures categories and attaches them to the recipes saved in grocy
 - Same with cook times
 - Same with images
+- leverage python scraper wild west mode
 
 ## Future Enhancements
 

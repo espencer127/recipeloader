@@ -1,6 +1,6 @@
 package com.spencer.recipeloader.controller;
 
-import com.spencer.recipeloader.retrieval.model.scraper.ImageInfo;
+import com.spencer.recipeloader.universal.model.ImageInfo;
 
 import lombok.Data;
 

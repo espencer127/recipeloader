@@ -17,18 +17,17 @@ import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spencer.recipeloader.controller.FullResponse;
-import com.spencer.recipeloader.controller.InsertImageRequest;
 import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.model.RecipesPos;
+import com.spencer.recipeloader.image.retrieval.ImageRetriever;
 import com.spencer.recipeloader.mapper.RecipeMapper;
-import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
-import com.spencer.recipeloader.retrieval.image.ImageRetriever;
-import com.spencer.recipeloader.retrieval.model.recipeml.Ing;
-import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
-import com.spencer.recipeloader.retrieval.model.scraper.ImageInfo;
+import com.spencer.recipeloader.recipe.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.recipe.retrieval.model.recipeml.Ing;
+import com.spencer.recipeloader.universal.model.FullResponse;
+import com.spencer.recipeloader.universal.model.ImageInfo;
+import com.spencer.recipeloader.universal.model.RecipeInfo;
 import com.spencer.recipeloader.utils.Utils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -64,15 +63,17 @@ public class GrocyService {
      * <li>API: POST add each ingredient to the recipe ("recipe_pos")</li>
      * @return 
      */
-    public Integer sendInfoToGrocy(FullResponse recipeAndImage) {
+    public FullResponse sendInfoToGrocy(FullResponse recipeAndImage) {
 
         ImageInfo imgInfo = recipeAndImage.getImage();
+
+        //TODO: download picture
 
         if (!StringUtils.isEmpty(imgInfo.getUrl())) {
             createPicture(imgInfo);
         }
 
-        RecipeDto recipeDto = recipeAndImage.getRecipe();
+        RecipeInfo recipeDto = recipeAndImage.getRecipe();
 
         Recipe recipe = recipeMapper.toRecipe(recipeDto, imgInfo.getFileName());
 
@@ -97,7 +98,11 @@ public class GrocyService {
 
         //TODO: Not sure why inserting recipes w/ catgories in the desc doesn't work?
 
-        return recipe.getId();
+        recipeAndImage.setRecipeID(recipe.getId());
+
+        //TODO: grocyService.associateGrocyImageToGrocyRecipe(recipeAndImage);
+        return recipeAndImage;
+
     }
 
     /**
@@ -107,7 +112,7 @@ public class GrocyService {
      * @param recipeDto
      * @param updatedUserQuantityUnits
      */
-    private void updateProductMasterData(RecipeDto recipeDto, List<QuantityUnit> updatedUserQuantityUnits) {
+    private void updateProductMasterData(RecipeInfo recipeDto, List<QuantityUnit> updatedUserQuantityUnits) {
         List<Product> existingUserIngredients = grocyClient.getProducts();
 
         List<Product> addedProducts = new ArrayList<>();
@@ -137,7 +142,7 @@ public class GrocyService {
      * @return
      */
     private List<Product> addQtyUnitsToIngredients(List<String> ingredientNamesWeNeedToAdd,
-            List<QuantityUnit> updatedUserQuantityUnits, RecipeDto recipeDto) {
+            List<QuantityUnit> updatedUserQuantityUnits, RecipeInfo recipeDto) {
 
         List<Ing> ingredientsInRecipe = Arrays.asList(recipeDto.getIngredients().getIng());
 
@@ -196,7 +201,7 @@ public class GrocyService {
      * 
      * @param recipeDto
      */
-    private void updateQuantityMasterData(RecipeDto recipeDto) {
+    private void updateQuantityMasterData(RecipeInfo recipeDto) {
         List<QuantityUnit> existingUserQuantityUnits = grocyClient.getQuantityUnits();
 
         log.debug("got the existing quantity units: {}", existingUserQuantityUnits);
@@ -230,7 +235,7 @@ public class GrocyService {
      * @param updatedProductsList
      * @return
      */
-    public List<RecipesPos> generateRecipePosList(RecipeDto recipeDto, Recipe recipe,
+    public List<RecipesPos> generateRecipePosList(RecipeInfo recipeDto, Recipe recipe,
             List<Product> updatedProductsList, List<QuantityUnit> updatedQuantityUnits) {
 
         List<RecipesPos> finalResult = new ArrayList<>();
@@ -360,7 +365,7 @@ public class GrocyService {
         return returnValue;
     }
 
-    private List<String> findQuantitiesWeNeedToAdd(RecipeDto recipeDto, List<QuantityUnit> existingUserQuantityUnits) {
+    private List<String> findQuantitiesWeNeedToAdd(RecipeInfo recipeDto, List<QuantityUnit> existingUserQuantityUnits) {
 
         List<Ing> ingredients = Arrays.asList(recipeDto.getIngredients().getIng());
 
@@ -397,7 +402,7 @@ public class GrocyService {
     }
 
     // TODO: need to match on both qty and name
-    public List<String> findIngredientsWeNeedToAdd(RecipeDto recipeDto, List<Product> existingUserIngredients) {
+    public List<String> findIngredientsWeNeedToAdd(RecipeInfo recipeDto, List<Product> existingUserIngredients) {
 
         List<String> existingIngredients = new ArrayList<>();
 
@@ -426,24 +431,28 @@ public class GrocyService {
         return dedupedList;
     }
 
-
-    public void downloadThenUploadThenAssociate(InsertImageRequest imgRequest) {
+    /**
+     * adds the grocy image name to the recipe
+     * @param imgRequest
+     */
+    public void associateGrocyImageToGrocyRecipe(FullResponse recipeAndImage) {
         ObjectMapper mapper = new ObjectMapper();
-        ImageInfo imgResult = imageRetriever.downloadImage(imgRequest.getImageUrl());
-        //UPLOAD
-        createPicture(imgResult);
-        //make a recipe with just the one object
+
+        //make a recipe for the PUT request body
         Recipe rec = new Recipe();
-        rec.setPicture_file_name(imgResult.getFileName());
+        rec.setPicture_file_name(recipeAndImage.getImage().getFileName());
         try {
-            grocyClient.putObject("recipes", imgRequest.getRecipeId(), mapper.writeValueAsString(rec));
+            grocyClient.putObject("recipes", recipeAndImage.getRecipeID(), mapper.writeValueAsString(rec));
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
     }
 
+    /**
+     * Takes a local picture and inserts it into grocy
+     * @param imageInfo
+     */
     public void createPicture(ImageInfo imageInfo) {    
         File file = new File(imageInfo.getLocalPath());
 

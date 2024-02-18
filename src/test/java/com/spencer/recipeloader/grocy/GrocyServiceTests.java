@@ -18,10 +18,10 @@ import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.model.RecipesPos;
 import com.spencer.recipeloader.grocy.service.GrocyClient;
 import com.spencer.recipeloader.grocy.service.GrocyService;
+import com.spencer.recipeloader.image.retrieval.ImageRetriever;
 import com.spencer.recipeloader.mapper.RecipeMapper;
-import com.spencer.recipeloader.retrieval.FileRetrieverServiceImpl;
-import com.spencer.recipeloader.retrieval.image.ImageRetriever;
-import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
+import com.spencer.recipeloader.recipe.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.universal.model.RecipeInfo;
 
 public class GrocyServiceTests {
 
@@ -49,7 +49,7 @@ public class GrocyServiceTests {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            RecipeDto recipeDto = objectMapper.readValue(new File("src/test/resources/mockobjects/grocy/service/recipeDto.json"), RecipeDto.class);
+            RecipeInfo recipeDto = objectMapper.readValue(new File("src/test/resources/mockobjects/grocy/service/recipeDto.json"), RecipeInfo.class);
             Recipe recipe = objectMapper.readValue(new File("src/test/resources/mockobjects/grocy/service/recipe.json"), Recipe.class);
             Product[] updatedProductsArray = objectMapper.readValue(new File("src/test/resources/mockobjects/grocy/service/updatedProductsList.json"), Product[].class);
             QuantityUnit[] updatedQuantityArray = objectMapper.readValue(new File("src/test/resources/mockobjects/grocy/service/updatedQuantityUnits.json"), QuantityUnit[].class);
