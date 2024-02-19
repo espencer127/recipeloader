@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import com.spencer.recipeloader.NullChecker;
 import com.spencer.recipeloader.controller.ImportRequest;
-import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
+import com.spencer.recipeloader.recipe.retrieval.FileRetrieverServiceImpl;
+import com.spencer.recipeloader.universal.model.FullResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +28,7 @@ public class FileRetrieverServiceTests {
         ImportRequest imp = new ImportRequest();
         imp.setFilePath("src\\test\\resources\\LemonBars.xml");
 
-        RecipeDto rec = fileRetrieverService.retrieveRecipe(imp);
+        FullResponse rec = fileRetrieverService.retrieveRecipe(imp);
 
         log.info("Test class got the recipe {}", rec);
 
@@ -43,7 +44,7 @@ public class FileRetrieverServiceTests {
         ImportRequest imp = new ImportRequest();
         imp.setFilePath("src\\test\\resources\\LemonBars.xml");
 
-        RecipeDto rec = fileRetrieverService.retrieveRecipe(imp);
+        FullResponse rec = fileRetrieverService.retrieveRecipe(imp);
 
         Boolean result = NullChecker.anyNull(rec);
 

@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.retrieval;
+package com.spencer.recipeloader.recipe.retrieval;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +12,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.spencer.recipeloader.controller.ImportRequest;
-import com.spencer.recipeloader.retrieval.model.recipeml.Ing;
-import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
-import com.spencer.recipeloader.retrieval.model.recipeml.RecipeMLWrapper;
+import com.spencer.recipeloader.recipe.retrieval.model.recipeml.Ing;
+import com.spencer.recipeloader.recipe.retrieval.model.recipeml.RecipeMLWrapper;
+import com.spencer.recipeloader.universal.model.FullResponse;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class FileRetrieverServiceImpl implements RecipeRetrieverService<ImportRe
      * @return
      */
     @Override
-    public RecipeDto retrieveRecipe(ImportRequest input) {
+    public FullResponse retrieveRecipe(ImportRequest input) {
 
         File file = new File(input.getFilePath());
         
@@ -52,7 +52,10 @@ public class FileRetrieverServiceImpl implements RecipeRetrieverService<ImportRe
 
             fixRecipe(recipe);
 
-            return recipe.getRecipeml().getRecipe();
+            FullResponse resp = new FullResponse();
+            resp.setRecipe(recipe.getRecipeml().getRecipe());
+
+            return resp;
         } catch (IOException e) {
             e.printStackTrace();
         }

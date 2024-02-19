@@ -1,4 +1,4 @@
-package com.spencer.recipeloader.retrieval.image;
+package com.spencer.recipeloader.image.retrieval;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,9 +7,6 @@ import java.net.URL;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class ImageRetrieverClient {
 

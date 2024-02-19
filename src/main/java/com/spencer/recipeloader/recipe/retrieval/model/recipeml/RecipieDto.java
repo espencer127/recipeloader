@@ -1,10 +1,11 @@
-package com.spencer.recipeloader.retrieval.model.recipeml;
+package com.spencer.recipeloader.recipe.retrieval.model.recipeml;
 
 import lombok.Data;
 
 @Data
-public class RecipeDto {
+public class RecipieDto {
     private Head head;
     private Ingredients ingredients;
     private Directions directions;
+
 }

@@ -8,19 +8,20 @@ import com.spencer.recipeloader.grocy.model.Product;
 import com.spencer.recipeloader.grocy.model.QuantityUnit;
 import com.spencer.recipeloader.grocy.model.Recipe;
 import com.spencer.recipeloader.grocy.model.RecipesPos;
-import com.spencer.recipeloader.retrieval.model.recipeml.RecipeDto;
-import com.spencer.recipeloader.retrieval.model.scraper.AllRecipesRecipe;
+import com.spencer.recipeloader.recipe.retrieval.model.pythonscraper.PythonRecipe;
+import com.spencer.recipeloader.universal.model.ImageInfo;
+import com.spencer.recipeloader.universal.model.RecipeInfo;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RecipeMapper {
 
-    @Mapping(source = "recipeDto.head.title", target="name")
-    @Mapping(source = "recipeDto.directions.step", target = "description")
-    @Mapping(source = "recipeDto.head.time.prepTime", target="userfields.preptime")
-    @Mapping(source = "recipeDto.head.time.cookTime", target="userfields.cooktime")
-    @Mapping(source = "recipeDto.head.time.totalTime", target="userfields.totaltime")
+    @Mapping(source = "recipeDto.title", target="name")
+    @Mapping(source = "recipeDto.directions", target = "description")
+    @Mapping(source = "recipeDto.prepTime", target="userfields.preptime")
+    @Mapping(source = "recipeDto.cookTime", target="userfields.cooktime")
+    @Mapping(source = "recipeDto.totalTime", target="userfields.totaltime")
     //@Mapping(expression = "java(recipeDto.getHead().getCategories().createCategories())", target="userfields.category")
-    Recipe toRecipe(RecipeDto recipeDto, String picture_file_name);
+    Recipe toRecipe(RecipeInfo recipeDto, String picture_file_name);
 
     /** convert string to products post body
      * The minimal POST body looks like this, these fields need to be populated;
@@ -54,16 +55,5 @@ public interface RecipeMapper {
     RecipesPos toRecipePosPostBodyWithAmount(Integer product_id, Integer recipe_id, Integer amount, Integer qu_id);
 
     RecipesPos toRecipePosPostBodyWithVariableAmount(Integer product_id, Integer recipe_id, Integer amount, String variable_amount, Integer qu_id);
-
-    @Mapping(expression="java(allRecipesRecipe.createYield())", target="head.yield")
-    //@Mapping(source = "allRecipesRecipe.recipeCategory", target="head.categories.cat")
-
-    @Mapping(expression="java(allRecipesRecipe.createIngredients())", target="ingredients.ing")
-    @Mapping(expression= "java(allRecipesRecipe.getInstructions())", target="directions.step")
-    @Mapping(source = "allRecipesRecipe.name", target = "head.title")
-    @Mapping(source = "allRecipesRecipe.cookTime", target = "head.time.cookTime")
-    @Mapping(source = "allRecipesRecipe.prepTime", target = "head.time.prepTime")
-    @Mapping(source = "allRecipesRecipe.totalTime", target = "head.time.totalTime")
-    RecipeDto toRecipeDto(AllRecipesRecipe allRecipesRecipe);
 
 }
