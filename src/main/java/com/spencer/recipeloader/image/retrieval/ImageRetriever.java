@@ -7,7 +7,6 @@ import java.util.Base64;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spencer.recipeloader.universal.model.ImageInfo;

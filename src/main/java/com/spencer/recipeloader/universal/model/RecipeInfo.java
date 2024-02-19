@@ -37,7 +37,7 @@ public class RecipeInfo {
         rec.setPrepTime(String.valueOf(pRec.getPrep_time()));
         rec.setCookTime(String.valueOf(pRec.getCook_time()));
         rec.setTotalTime(String.valueOf(pRec.getTotal_time()));
-        //TODO: ingredients stuff
+        rec.setIngredients(new Ingredients().fromPythonRecipe(pRec.getIngredients()));
         rec.setDirections(directionsJoiner.toString());
 
         return rec;

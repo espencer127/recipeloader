@@ -9,4 +9,14 @@ public class Ingredients {
     
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private Ing[] ing;
+
+    public Ingredients fromPythonRecipe(String[] ings) {
+
+        Ing[] result = new Ing().createIngredients(ings);
+        Ingredients ingreds = new Ingredients();
+        ingreds.setIng(result);
+
+        return ingreds;
+    }
+
 }
