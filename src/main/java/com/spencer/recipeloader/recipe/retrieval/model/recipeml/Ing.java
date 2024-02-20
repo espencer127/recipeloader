@@ -5,12 +5,22 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Ing {
     private Amount amt;
     private String item;
+
+    /**
+     * Converts a string array into an Ing array
+     * @param scrapedIngredients
+     * @return
+     */
 
     public Ing[] createIngredients(String[] scrapedIngredients) {
         List<Ing> ingList = new ArrayList<>();

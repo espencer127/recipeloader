@@ -16,12 +16,16 @@ import lombok.Data;
 public class RecipeInfo {
     private String title;
     private String categories;
+    private String diet;
+    private String protein;
+    private String numIngredients;
     private String yield;
     private String prepTime;
     private String cookTime;
     private String totalTime;
     private Ingredients ingredients;
     private String directions;
+    private String pictureUrl;
 
     public RecipeInfo buildFromPythonRecipe(PythonRecipe pRec) {
 

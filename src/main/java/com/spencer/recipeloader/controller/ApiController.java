@@ -1,12 +1,16 @@
 package com.spencer.recipeloader.controller;
 
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.spencer.recipeloader.grocy.model.AllGrocyData;
+import com.spencer.recipeloader.grocy.model.RecipeList;
+import com.spencer.recipeloader.grocy.service.GrocyClient;
 import com.spencer.recipeloader.grocy.service.GrocyService;
 import com.spencer.recipeloader.recipe.retrieval.FileRetrieverServiceImpl;
 import com.spencer.recipeloader.recipe.retrieval.PythonScraperServiceImpl;
@@ -21,11 +25,18 @@ public class ApiController {
     FileRetrieverServiceImpl fileRetrieverService;
     PythonScraperServiceImpl scraperService;
     GrocyService grocyService;
+    GrocyClient grocyClient;
 
-    public ApiController(FileRetrieverServiceImpl fileRetrieverService, PythonScraperServiceImpl scraperService, GrocyService grocyService) {
+    public ApiController(FileRetrieverServiceImpl fileRetrieverService, PythonScraperServiceImpl scraperService, GrocyService grocyService, GrocyClient grocyClient) {
         this.fileRetrieverService = fileRetrieverService;
         this.scraperService = scraperService;
         this.grocyService = grocyService;
+        this.grocyClient = grocyClient;
+    }
+
+    @GetMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RecipeList getRecipes() {
+        return new RecipeList().associate(new AllGrocyData(grocyClient).buildFromGrocyData());
     }
 
     @PostMapping(value = "/scrape", produces = MediaType.APPLICATION_JSON_VALUE)

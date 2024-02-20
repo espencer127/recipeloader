@@ -17,4 +17,5 @@ public class RecipesPos {
     private Integer qu_id;
     private String ingredient_group;
     private String variable_amount;
+
 }

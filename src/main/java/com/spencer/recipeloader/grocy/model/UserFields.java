@@ -15,5 +15,6 @@ public class UserFields {
     private String diet;
     private String numingredients;
     private String preptime;
+    private String protein;
     private String totaltime;
 }

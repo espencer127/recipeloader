@@ -22,6 +22,7 @@ import com.spencer.recipeloader.image.retrieval.ImageRetriever;
 import com.spencer.recipeloader.mapper.RecipeMapper;
 import com.spencer.recipeloader.recipe.retrieval.FileRetrieverServiceImpl;
 import com.spencer.recipeloader.universal.model.RecipeInfo;
+import com.spencer.recipeloader.utils.Utils;
 
 public class GrocyServiceTests {
 
@@ -80,7 +81,7 @@ public class GrocyServiceTests {
 
         GrocyService grocyService = new GrocyService(recipeMLService, recipeMapper, grocyClient, imgRetriever);
         
-        Integer response = grocyService.parse(fractionQty);
+        Integer response = Utils.parseQty(fractionQty);
 
         assertEquals(expected, response);
     }

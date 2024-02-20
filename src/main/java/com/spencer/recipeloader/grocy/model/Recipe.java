@@ -13,6 +13,7 @@ public class Recipe {
     private Integer id;
     private String name;
     private String description;
+    private Integer base_servings;
     private String picture_file_name;
     private UserFields userfields;
 }
