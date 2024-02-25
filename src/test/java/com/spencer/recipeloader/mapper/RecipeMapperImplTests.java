@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -14,6 +15,7 @@ import com.spencer.recipeloader.universal.model.RecipeInfo;
 
 public class RecipeMapperImplTests {
 
+    @Disabled("I've disabled this functionality in the app right now")
     @Test
     public void whenParseDtoToRecipe_shouldContainCategories() {
         

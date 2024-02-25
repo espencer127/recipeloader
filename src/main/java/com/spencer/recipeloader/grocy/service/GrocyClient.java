@@ -142,7 +142,7 @@ public class GrocyClient {
 
         return null;
     }
-
+ 
     public ResponseEntity<String> getObject(String entity) {
 
         String api = "api";
@@ -225,7 +225,14 @@ public class GrocyClient {
 
     public Recipe createRecipe(Recipe recipe) {
         try {
-            GrocyPostResponse apiResponse = postObject((Entity.RECIPES.label), mapper.writeValueAsString(recipe));
+            Recipe recipeSansUserFields = new Recipe();
+            recipeSansUserFields.setName(recipe.getName());
+            recipeSansUserFields.setDescription(recipe.getDescription());
+            recipeSansUserFields.setBase_servings(recipe.getBase_servings());
+            recipeSansUserFields.setPicture_file_name(recipe.getPicture_file_name());
+
+            //TODO: for some reason, the POST request doesn't work when the userfields are included?
+            GrocyPostResponse apiResponse = postObject((Entity.RECIPES.label), mapper.writeValueAsString(recipeSansUserFields));
             log.debug("Got the response: {}", apiResponse);
 
             recipe.setId(apiResponse.getCreated_object_id());

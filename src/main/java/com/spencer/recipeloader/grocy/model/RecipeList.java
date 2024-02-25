@@ -54,7 +54,7 @@ public class RecipeList {
                 Product matchingProduct = allGrocyData.getProducts().stream().filter(prdIt -> prdIt.getId().equals(rp.getProduct_id())).findFirst().get();
                 //TODO: based on if amt is singular or plural, get matchingQty name or plural name
                 Amount tempAmt = new Amount(String.valueOf(rp.getAmount()), matchingQty.getName());
-                ingList.add(new Ing(tempAmt, matchingProduct.getName()));
+                ingList.add(new Ing(tempAmt, matchingProduct.getName(), ""));
             });
             
             Ing[] ingArray = ingList.stream().toArray(Ing[] ::new);

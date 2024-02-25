@@ -34,6 +34,11 @@ public class ApiController {
         this.grocyClient = grocyClient;
     }
 
+    @GetMapping(value = "/hi")
+    public String hi() {
+        return "hi";
+    }
+
     @GetMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
     public RecipeList getRecipes() {
         return new RecipeList().associate(new AllGrocyData(grocyClient).buildFromGrocyData());

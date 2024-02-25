@@ -47,7 +47,7 @@ public class UIController {
         String exampleUrl = "https://www.allrecipes.com/recipe/235158/worlds-best-honey-garlic-pork-chops/";
         ScrapeRequest req = new ScrapeRequest();
         req.setURL(exampleUrl);
-        FullResponse result = scraperService.retrieveRecipe(req.getURL());
+        FullResponse result = scraperService.retrieveRecipe(req);
         model.addAttribute("recipeDto", mapper.writeValueAsString(result.getRecipe()));
         model.addAttribute("url", exampleUrl);
         return "ScrapeExample";
@@ -64,7 +64,7 @@ public class UIController {
     public String showRequest(@ModelAttribute("scrapeRequest") ScrapeRequest request, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String url = request.getURL();
-        FullResponse result = scraperService.retrieveRecipe(request.getURL());
+        FullResponse result = scraperService.retrieveRecipe(request);
         model.addAttribute("recipeDto", mapper.writeValueAsString(result.getRecipe()));
         model.addAttribute("url", url);
 

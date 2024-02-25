@@ -43,7 +43,7 @@ public class FullResponse {
     }
 
     public FullResponse buildFromScrape(ScrapeRequest requestBody) {
-        return scraperService.retrieveRecipe(requestBody.getURL());
+        return scraperService.retrieveRecipe(requestBody);
     }
     
     public FullResponse buildFromImport(ImportRequest requestBody) {

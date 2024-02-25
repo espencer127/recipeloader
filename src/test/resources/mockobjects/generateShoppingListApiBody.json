@@ -1,0 +1,478 @@
+[
+    {
+        "title": "Vegan Sweet Potato Chickpea Curry",
+        "categories": "dinner",
+        "diet": "vegan",
+        "numIngredients": "14",
+        "yield": "1",
+        "ingredients": {
+            "ing": [
+                {
+                    "amt": {
+                        "qty": "3",
+                        "unit": "tablespoons"
+                    },
+                    "item": "olive oil"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "onion, chopped"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "cloves"
+                    },
+                    "item": "garlic, minced"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "teaspoon"
+                    },
+                    "item": "minced fresh ginger root"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "15 oz can"
+                    },
+                    "item": "canned chickpeas, drained"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "14.5 oz can"
+                    },
+                    "item": "canned diced tomatoes"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "14 oz can"
+                    },
+                    "item": "canned coconut milk"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "sweet potato, cubed"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "tablespoon"
+                    },
+                    "item": "garam masala"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "ground cumin"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "ground turmeric"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "salt"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "red chile flakes"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "cup"
+                    },
+                    "item": "baby spinach"
+                }
+            ]
+        },
+        "directions": "Heat oil in a skillet over medium heat. Cook onion, garlic, and ginger in hot oil until softened, about 5 minutes. Add chickpeas, tomatoes, coconut milk, and sweet potato. Bring to a boil, reduce heat to low, and simmer until tender, about 15 minutes.<br />Season with garam masala, cumin, turmeric, salt, and chile flakes. Add spinach right before serving. https://www.allrecipes.com/recipe/265472/vegan-sweet-potato-chickpea-curry/",
+        "pictureUrl": "http://localhost:8080/api/files/recipepictures/cDE4eDBjNmR5b2Ftd3k3ZjhtYzJsdmVnYW4gc3dlZXQgcG90YXRvIGNoaWNrcGVhIGN1cnJ5LndlYnA="
+    },
+    {
+        "title": "Ultimate Vegan Burrito",
+        "categories": "dinner",
+        "diet": "vegan",
+        "protein": "beans",
+        "numIngredients": "14",
+        "yield": "1",
+        "prepTime": "15",
+        "cookTime": "20",
+        "totalTime": "35",
+        "ingredients": {
+            "ing": [
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "cups"
+                    },
+                    "item": "cooked spanish rice"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "large"
+                    },
+                    "item": "portobello mushroom caps"
+                },
+                {
+                    "amt": {
+                        "qty": "0",
+                        "unit": "unit"
+                    },
+                    "item": "medium red onion"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "orange bell pepper"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "tablespoons"
+                    },
+                    "item": "olive oil"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "teaspoon"
+                    },
+                    "item": "cumin"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "garlic powder"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "onion powder"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "smoked paprika"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "kosher salt"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "tablespoons"
+                    },
+                    "item": "lime juice"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "avocado"
+                },
+                {
+                    "amt": {
+                        "qty": "4",
+                        "unit": "unit"
+                    },
+                    "item": "large flour tortillas"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "15 oz can"
+                    },
+                    "item": "canned black beans, drained and rinsed"
+                }
+            ]
+        },
+        "directions": "Start the Spanish Rice (aka Mexican Rice).\nMeanwhile, remove the stems from the mushroom caps and thinly slice them. Thinly slice the red onion. Thinly slice the bell pepper.\nIn a large skillet, heat the olive oil over medium high heat. Saute the veggies for 6 to 7 minutes until tender. Add the black beans (drained and rinsed), garlic powder, cumin, onion powder, paprika, kosher salt, lime juice, and 2 tablespoons water. Cook for 2 minutes until heated through and the liquid evaporates.\nPit the avocado. Mash it and sprinkle it with kosher salt.\nWhen the rice is done, finish it with the seasonings per that recipe. Then get ready to roll!\nPlace the tortillas on individual plates. Spread 1/2 cup rice on each one, at the center. Top each with about a quarter of the vegetable and bean mixture, and a quarter of the avocado. (Add any optional sauce if desired.) Fold the tortillas in half over the filling, then tuck them around and underneath the filling, forming a tight roll. Fold in each side of the burritos, then roll them up. Cut in half and serve. <br /> additional sauce ideas (optional): Creamy Cilantro Sauce, Vegan Queso, Spicy Chipotle Sauce, Chipotle Cream, Spicy Mayo, Vegan Sour Cream, Cashew Cream <br /> https://www.acouplecooks.com/vegan-burrito/",
+        "pictureUrl": "http://localhost:8080/api/files/recipepictures/bnc1djI5MWw1Y2w0NjFnbXd5bms3cmVjaXBlcGljdHVyZTAyMjExOTQ4MDUuanBn"
+    },
+    {
+        "title": "Vegan Sloppy Joes (That Everyone Loves!)",
+        "categories": "dinner",
+        "diet": "vegan",
+        "numIngredients": "16",
+        "yield": "8",
+        "prepTime": "10",
+        "cookTime": "25",
+        "totalTime": "35",
+        "ingredients": {
+            "ing": [
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "cups"
+                    },
+                    "item": "brown or green lentils"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "quart"
+                    },
+                    "item": "vegetable broth, divided"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "kosher salt, divided"
+                },
+                {
+                    "amt": {
+                        "qty": "0",
+                        "unit": "unit"
+                    },
+                    "item": "green bell pepper"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "medium onion"
+                },
+                {
+                    "amt": {
+                        "qty": "4",
+                        "unit": "cloves"
+                    },
+                    "item": "garlic"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "tablespoons"
+                    },
+                    "item": "olive oil"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "cup"
+                    },
+                    "item": "plus 2 tablespoons organic ketchup, divided"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "tablespoons"
+                    },
+                    "item": "plus 1 teaspoon vegan worcestershire sauce, divided"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "mustard powder"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "onion powder"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "teaspoon"
+                    },
+                    "item": "chili powder"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "hot sauce, to taste"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "pickled onions, to serve"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "bread and butter pickles, to serve"
+                },
+                {
+                    "amt": {
+                        "qty": "8",
+                        "unit": "unit"
+                    },
+                    "item": "whole wheat buns"
+                }
+            ]
+        },
+        "directions": "Cook the lentils\nIn a large saucepan, place the lentils with 3 cups of the vegetable broth, 2 cups water, and 1/2 teaspoon kosher salt. Bring to a rapid simmer. Reduce the heat and simmer uncovered for about 20 to 25 minutes, until the lentils are tender but still hold their shape (start tasting at 15 minutes; the exact timing depends on the heat level and your pan size). Drain the excess liquid.\nMeanwhile, make the sauce\nOnce you’ve started the lentils, dice the bell pepper. Dice the onion. Mince the garlic.\nIn another large saucepan, heat the olive oil over medium high heat. Add the bell pepper and onion and cook 5 minutes until the onions are translucent. Add the garlic and cook for 1 minute. Add vegetable broth, 1 cup ketchup, Worcestershire sauce, mustard powder, onion powder, and chili powder. Simmer for 5 minutes until thickened.\nAdd the lentils to the sauce\nWhen the lentils are done, add them to the sauce. Cook on low heat for about 5 minutes. Then remove the heat and stir in the remaining 2 tablespoons ketchup, 1 teaspoon Worcestershire sauce, and 1/2 teaspoon kosher salt.\nServe on a bun with pickled onions and pickles. (If desired, toast the buns prior to serving.) Make ahead: Leftovers save well for 3 to 4 days. Make in advance, refrigerate and then reheat in a saucepan. Add an extra squeeze of ketchup if it seems dry. <br /> https://www.acouplecooks.com/vegan-sloppy-joes/",
+        "pictureUrl": "http://localhost:8080/api/files/recipepictures/eTg4bmwzMDRidG1uZ3NxeXBkY21yY3JlY2lwZXBpY3R1cmUwMjIxMjAxOTI4LmpwZw=="
+    },
+    {
+        "title": "Crispy Tofu Bowl",
+        "categories": "dinner",
+        "diet": "vegan",
+        "protein": "tofu",
+        "numIngredients": "15",
+        "yield": "4",
+        "prepTime": "20",
+        "cookTime": "20",
+        "totalTime": "40",
+        "ingredients": {
+            "ing": [
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "14 oz package"
+                    },
+                    "item": "extra firm tofu"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "kosher salt"
+                },
+                {
+                    "amt": {
+                        "qty": "3",
+                        "unit": "tablespoons"
+                    },
+                    "item": "cornstarch"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "tablespoons"
+                    },
+                    "item": "olive oil"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "tablespoon"
+                    },
+                    "item": "toasted sesame oil"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "tablespoons"
+                    },
+                    "item": "soy sauce"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "cup"
+                    },
+                    "item": "white rice"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "unit"
+                    },
+                    "item": "ripe avocados, sliced or diced"
+                },
+                {
+                    "amt": {
+                        "qty": "0",
+                        "unit": "unit"
+                    },
+                    "item": "english cucumber, diced"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "unit"
+                    },
+                    "item": "large carrots, julienne peeled or shredded"
+                },
+                {
+                    "amt": {
+                        "qty": "4",
+                        "unit": "unit"
+                    },
+                    "item": "radishes, sliced"
+                },
+                {
+                    "amt": {
+                        "qty": "0",
+                        "unit": "cup"
+                    },
+                    "item": "mayonnaise or vegan mayo"
+                },
+                {
+                    "amt": {
+                        "qty": "2",
+                        "unit": "tablespoons"
+                    },
+                    "item": "sriracha"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "crunchy fried onions, to garnish (required!)"
+                },
+                {
+                    "amt": {
+                        "qty": "1",
+                        "unit": "unit"
+                    },
+                    "item": "chunky sea salt, to garnish"
+                }
+            ]
+        },
+        "directions": "Rinse the rice. Bring 1 1/2 cups of water to boil in a medium saucepan. Add the rice and 1/4 teaspoon kosher salt. Bring to a boil, reduce heat to low, and cover. Simmer 12 to 15 minutes or until the water is fully absorbed (check by pulling back with a fork). Remove the heat, cover and allow to steam for 5 to 10 minutes. Then fluff with a fork.\nFollow the instructions to cook the Baked Tofu or Crispy Tofu*.\nChop the avocados. Dice the cucumber. Julienne or shred the carrots. Slice the radishes.\nMake the spicy mayo: mix together the mayonnaise and the Sriracha.\nTo serve, place the rice in a bowl and top with the tofu and veggies. Sprinkle salt on the veggies or a tiny bit of soy sauce around the whole bowl. Top with the spicy mayo and a generous sprinkle of crunchy fried onions. <br /> https://www.acouplecooks.com/tofu-bowl/",
+        "pictureUrl": "http://localhost:8080/api/files/recipepictures/bDJnb3o3MnJjN2E2Mzg1bjBzOXMxNnJlY2lwZXBpY3R1cmUwMjIxMjAxNDMwLmpwZw=="
+    }
+]

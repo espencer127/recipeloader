@@ -52,8 +52,8 @@ public interface RecipeMapper {
     @Mapping(source = "quantityName", target="name_plural")
     QuantityUnit toQuantityUnitPostBody(String quantityName);
 
-    RecipesPos toRecipePosPostBodyWithAmount(Integer product_id, Integer recipe_id, Integer amount, Integer qu_id);
+    RecipesPos toRecipePosPostBodyWithAmount(Integer product_id, Integer recipe_id, Integer amount, Integer qu_id, String note);
 
-    RecipesPos toRecipePosPostBodyWithVariableAmount(Integer product_id, Integer recipe_id, Integer amount, String variable_amount, Integer qu_id);
+    RecipesPos toRecipePosPostBodyWithVariableAmount(Integer product_id, Integer recipe_id, Integer amount, String variable_amount, Integer qu_id, String note);
 
 }

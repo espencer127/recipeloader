@@ -1,8 +1,14 @@
 package com.spencer.recipeloader.recipe.retrieval.model.pythonscraper;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class PythonRecipe {
     private String author;
     private String canonical_url;
@@ -26,12 +32,16 @@ public class PythonRecipe {
     private String yields;
 
     @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(Include.NON_NULL)
     public static class IngredientGroup {
         private String[] ingredients;
         private String purpose;
     }
 
     @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(Include.NON_NULL)
     public static class NutritionInfo {
         private String calories;
         private String carbohydrateContent;
@@ -43,5 +53,6 @@ public class PythonRecipe {
         private String sugarContent;
         private String fatContent;
         private String unsaturatedFatContent;
+        private String transFatContent;
     }
 }

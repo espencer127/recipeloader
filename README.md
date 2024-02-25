@@ -2,6 +2,10 @@
 
 This app shoves RecipeML recipes into a docker-run grocy app.
 
+You can run the app by running command
+
+`$> docker run -p8888:8888 recipe-loader:latest`
+
 ## Current Features
 
 - Thymeleaf UI interface for users to scrape from a website, cleanse the response object, and then send it to Grocy

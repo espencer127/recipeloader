@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spencer.recipeloader.controller.ScrapeRequest;
 import com.spencer.recipeloader.recipe.retrieval.model.pythonscraper.PythonRecipe;
 import com.spencer.recipeloader.universal.model.FullResponse;
 
@@ -19,10 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class PythonScraperServiceImpl implements RecipeRetrieverService<String> {
+public class PythonScraperServiceImpl implements RecipeRetrieverService<ScrapeRequest> {
 
     @Override
-    public FullResponse retrieveRecipe(String input) {
+    public FullResponse retrieveRecipe(ScrapeRequest requestBody) {
         String result = "";
         String errors = "";
         Runtime rt = Runtime.getRuntime();
@@ -30,7 +31,15 @@ public class PythonScraperServiceImpl implements RecipeRetrieverService<String> 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
 
-        String line = "python C:/users/evani/code/recipeloader/src/main/resources/python/recipe-scrapers/scraper.py " + input;
+        StringBuilder command = new StringBuilder("python C:/users/evani/code/recipeloader/src/main/resources/python/recipe-scrapers");
+
+        if (requestBody.getWildWestMode() != null && requestBody.getWildWestMode() == true) {
+            command.append("/wildScraper.py " + requestBody.getURL());
+        } else {
+            command.append("/scraper.py " + requestBody.getURL());
+        }
+
+        String line = command.toString();
 
         Process proc;
 

@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class Ing {
     private Amount amt;
     private String item;
+    private String note;
 
     /**
      * Converts a string array into an Ing array

@@ -18,7 +18,7 @@ public class PythonScraperServiceTests {
 
         this.pythonScraperService = new PythonScraperServiceImpl();
         
-        pythonScraperService.retrieveRecipe("https://www.allrecipes.com/recipe/270944/instant-pot-honey-garlic-chicken/");
+        //pythonScraperService.retrieveRecipe("https://www.allrecipes.com/recipe/270944/instant-pot-honey-garlic-chicken/");
 
 
     }

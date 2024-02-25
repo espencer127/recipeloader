@@ -297,12 +297,12 @@ public class GrocyService {
                 try {
                     Integer neededInt = Integer.valueOf(neededIngQty);
                     postBody = recipeMapper.toRecipePosPostBodyWithAmount(matchingProduct.getId(), recipe.getId(),
-                            neededInt, matchingQuantityUnit.getId());
+                            neededInt, matchingQuantityUnit.getId(), ing.getNote());
                 } catch (NumberFormatException e) {
                     try {
                         postBody = recipeMapper.toRecipePosPostBodyWithVariableAmount(matchingProduct.getId(),
                                 recipe.getId(),
-                                Utils.parseQty(neededIngQty), neededIngQty, matchingQuantityUnit.getId());
+                                Utils.parseQty(neededIngQty), neededIngQty, matchingQuantityUnit.getId(), ing.getNote());
                     } catch (Exception e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
